@@ -14,6 +14,10 @@ haproxy_global:
 
 haproxy_defaults:
   mode: http
+  log:
+    - address: /dev/log
+      facility: local1
+      level: notice
   timeout:
       - param: 'connect'
         value: '5000ms'
