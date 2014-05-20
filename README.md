@@ -42,6 +42,7 @@ I *highly* suggest that you use a seperate variable file for this role (using th
              ip: '192.168.1.100'
 ```
 
+See [https://github.com/Pheromone/ansible-haproxy/blob/master/vars/main.yml](the full example) to see all options.
 
 
 License

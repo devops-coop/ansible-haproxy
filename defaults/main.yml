@@ -1,18 +1,34 @@
 ---
 # defaults file for haproxy
-haproxy:
-    global:
-        log:
-            address:
-            facility:
-            minlevel:
-            level:
-            format:
-    defaults:
-        mode:
-        log: 'global'
-        options:
-            - httpclose
-            - forwardfor except 127.0.0.0/8
-            - redispatch
-            - abortonclose
+haproxy_global:
+  log:
+    - address: /dev/log
+      facility: local0
+    - address: /dev/log
+      facility: local1
+      level: notice
+  chroot: /var/lib/haproxy
+  user: haproxy
+  group: haproxy
+  daemon: true
+
+haproxy_defaults:
+  mode: http
+  log: 'global'
+  options:
+    - httpclose
+    - forwardfor except 127.0.0.0/8
+    - redispatch
+    - abortonclose
+    - httplog
+    - dontlognull
+    - contimeout 5000
+    - clitimeout 50000
+    - srvtimeout 50000
+    - errorfile 400 /etc/haproxy/errors/400.http
+    - errorfile 403 /etc/haproxy/errors/403.http
+    - errorfile 408 /etc/haproxy/errors/408.http
+    - errorfile 500 /etc/haproxy/errors/500.http
+    - errorfile 502 /etc/haproxy/errors/502.http
+    - errorfile 503 /etc/haproxy/errors/503.http
+    - errorfile 504 /etc/haproxy/errors/504.http

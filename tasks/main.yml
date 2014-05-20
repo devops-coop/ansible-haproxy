@@ -2,35 +2,36 @@
 - name: Installs haproxy
   apt: pkg=haproxy state=installed
 
-- debug: msg="{{item.name}}"
-  with_items: haproxy.frontends
+- name: Enable it
+  copy: src='haproxy-default' dest='/etc/default/haproxy'
 
 - name: 'Create directory for the frontend'
   file: path='/etc/haproxy/frontends.d' state=directory
 
 - name: 'Build up the frontends'
   template: src=frontend.cfg dest=/etc/haproxy/frontends.d/{{ item.name }}.cfg 
-  with_items: haproxy.frontends
+  with_items: haproxy_frontends
+  when: haproxy_frontends is defined
 
 - name: 'Create directory for the backends'
   file: path='/etc/haproxy/backends.d' state=directory
 
 - name: 'Build up the backends'
   template: src=backend.cfg dest=/etc/haproxy/backends.d/{{ item.name }}.cfg 
-  with_items: haproxy.backends
+  with_items: haproxy_backends
+  when: haproxy_backends is defined
 
 - name: 'Create  the compiled folder'
   file: path='/etc/haproxy/compiled' state=directory
 
 - name: 'Build up the global config'
   template: src=global.cfg dest=/etc/haproxy/compiled/global.cfg 
-  with_items: haproxy.global
-  when: haproxy.global is defined
+  when: haproxy_global is defined
 
 - name: 'Build up the default config'
-  template: src=global.cfg dest=/etc/haproxy/compiled/defaults.cfg 
-  with_items: haproxy.defaults
-  when: haproxy.defaults is defined
+  template: src=defaults.cfg dest=/etc/haproxy/compiled/defaults.cfg 
+  when: haproxy_defaults is defined
+  tags: 'test'
 
 # Here we have to go through multiple assemble calls,
 # we can't assemble multiple folders into the same destination
@@ -42,4 +43,4 @@
   assemble: src=/etc/haproxy/frontends.d dest=/etc/haproxy/compiled/frontends.cfg
 
 - name: 'Assemble the final configuration file'
-  assemble: src=/etc/haproxy/compiled dest=/etc/haproxy/haproxy.cfg
+  assemble: src=/etc/haproxy/compiled dest=/etc/haproxy/haproxy.cfg backup=yes
