@@ -1,79 +1,80 @@
 ---
-haproxy_global:
-  chroot:
-  pidfile:
-  maxconn:
-  user:
-  group:
-  daemon:
-  spread_checks:
-  stats:
-      socket:
-  log:
-    - address:
-      facility:
-      level:
-      minlevel:
-      format:
-
-haproxy_defaults:
-  mode:
-  log: 
-  options:
-    - <option>
-  retries:
-  timeout:
-    - param:
-      value:
-  maxconn:
-  stats:
-    enabled:
-    hide_version:
-    uri:
-    realm:
-    auth:
-    refresh:
-
-haproxy_frontends:
-  - name:
-    ip:
-    bind:
-    maxconn:
-    monitor:
-      uri:
-      fail:
-        - <condition>
-    acl:
-      - name:
-        condition:
-    rate-limit-sessions:
-    block:
-        - 
-    default_backend:
-    use_backend:
-      - name:
-        condition:
-
-haproxy_backends:
-  - name:
-    disabled:
-    description:
-    balance:
-    log:
-    retries:
-    contimeout: 
-    http-send-name-header:
-    http-check-expect:
-        - condition
-    acl:
-      - name:
-        condition:
-    servers:
-      - name:
-        ip: 
-        port:
-        maxconn:
-        params:
-              - param1
-    options:
-        - forwardfor
+empty: true
+#haproxy_global:
+#  chroot:
+#  pidfile:
+#  maxconn:
+#  user:
+#  group:
+#  daemon:
+#  spread_checks:
+#  stats:
+#      socket:
+#  log:
+#    - address:
+#      facility:
+#      level:
+#      minlevel:
+#      format:
+#
+#haproxy_defaults:
+#  mode:
+#  log: 
+#  options:
+#    - <option>
+#  retries:
+#  timeout:
+#    - param:
+#      value:
+#  maxconn:
+#  stats:
+#    enabled:
+#    hide_version:
+#    uri:
+#    realm:
+#    auth:
+#    refresh:
+#
+#haproxy_frontends:
+#  - name:
+#    ip:
+#    bind:
+#    maxconn:
+#    monitor:
+#      uri:
+#      fail:
+#        - <condition>
+#    acl:
+#      - name:
+#        condition:
+#    rate-limit-sessions:
+#    block:
+#        - 
+#    default_backend:
+#    use_backend:
+#      - name:
+#        condition:
+#
+#haproxy_backends:
+#  - name:
+#    disabled:
+#    description:
+#    balance:
+#    log:
+#    retries:
+#    contimeout: 
+#    http-send-name-header:
+#    http-check-expect:
+#        - condition
+#    acl:
+#      - name:
+#        condition:
+#    servers:
+#      - name:
+#        ip: 
+#        port:
+#        maxconn:
+#        params:
+#              - param1
+#    options:
+#        - forwardfor
