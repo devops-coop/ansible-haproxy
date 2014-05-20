@@ -1,0 +1,18 @@
+---
+# defaults file for haproxy
+haproxy:
+    global:
+        log:
+            address:
+            facility:
+            minlevel:
+            level:
+            format:
+    defaults:
+        mode:
+        log: 'global'
+        options:
+            - httpclose
+            - forwardfor except 127.0.0.0/8
+            - redispatch
+            - abortonclose

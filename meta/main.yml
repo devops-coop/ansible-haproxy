@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  author: Pierre Paul Lefebvre 
+  description: Installs and configure haproxy
+  company: Pheromone 
+  license: Apache v2
+  min_ansible_version: 1.5
+  platforms:
+  - name: Ubuntu
+    versions:
+    - precise
+    - trusty
+  categories:
+  - networking
+  - system
+  - web
