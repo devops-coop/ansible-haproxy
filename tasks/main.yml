@@ -1,55 +1,74 @@
 ---
-- name: 'Installs haproxy'
-  apt: pkg=haproxy state=installed
+- name: 'Set SmartOS etc prefix'
+  set_fact: etc_prefix=/opt/local/etc
+  when: ansible_os_family == 'Solaris'
+
+- name: 'Set Ubuntu directory prefix'
+  set_fact: etc_prefix=/etc
+  when: ansible_os_family == 'Debian'
+
+- name: 'Installs haproxy as well as socat for socket api'
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - haproxy
+    - socat
+  when: ansible_os_family == 'Debian'
+
+- name: 'Installs haproxy as well as socat for socket api'
+  pkgin: name={{ item }} state=installed
+  with_items:
+    - haproxy
+    - socat
+  when: ansible_os_family == 'Solaris'
 
 - name: 'Enable it'
-  copy: src='haproxy-default' dest='/etc/default/haproxy'
+  copy: src=haproxy-default dest=/etc/default/haproxy
 
 - name: 'Create directory for the frontend'
-  file: path='/etc/haproxy/frontends.d' state=directory
+  file: path={{ etc_prefix }}/haproxy/frontends.d state=directory
 
 - name: 'Empty the folder if not already empty'
-  command: rm -f /etc/haproxy/backends.d/*.cfg
+  command: rm -f {{ etc_prefix }}/haproxy/backends.d/*.cfg
 
 - name: 'Build up the frontends'
-  template: src=frontend.cfg dest=/etc/haproxy/frontends.d/{{ item.name }}.cfg 
+  template: src=frontend.cfg dest={{ etc_prefix }}/haproxy/frontends.d/{{ item.name }}.cfg
   with_items: haproxy_frontends
   when: haproxy_frontends is defined
 
 - name: 'Create directory for the backends'
-  file: path='/etc/haproxy/backends.d' state=directory
+  file: path={{ etc_prefix }}/haproxy/backends.d' state=directory
 
 - name: 'Empty the folder if not already empty'
-  command: rm -f /etc/haproxy/backends.d/*.cfg
+  command: rm -f {{ etc_prefix }}/haproxy/backends.d/*.cfg
 
 - name: 'Build up the backends'
-  template: src=backend.cfg dest=/etc/haproxy/backends.d/{{ item.name }}.cfg 
+  template: src=backend.cfg dest={{ etc_prefix }}/haproxy/backends.d/{{ item.name }}.cfg
   with_items: haproxy_backends
   when: haproxy_backends is defined
 
 - name: 'Create  the compiled folder'
-  file: path='/etc/haproxy/compiled' state=directory
+  file: path={{ etc_prefix }}/haproxy/compiled state=directory
 
 - name: 'Empty the folder if not already empty'
-  command: rm -f /etc/haproxy/compiled/*.cfg
+  command: rm -f {{ etc_prefix }}/haproxy/compiled/*.cfg
 
 - name: 'Build up the global config'
-  template: src=global.cfg dest=/etc/haproxy/compiled/01-global.cfg 
+  template: src=global.cfg dest={{ etc_prefix }}/haproxy/compiled/01-global.cfg
   when: haproxy_global is defined
   tags: 'test'
 
 - name: 'Build up the default config'
-  template: src=defaults.cfg dest=/etc/haproxy/compiled/02-defaults.cfg 
+  template: src=defaults.cfg dest={{ etc_prefix }}/haproxy/compiled/02-defaults.cfg
   when: haproxy_defaults is defined
 
 # Here we have to go through multiple assemble calls,
 # we can't assemble multiple folders into the same destination
 
 - name: 'Assemble the backends configuration file'
-  assemble: src=/etc/haproxy/backends.d dest=/etc/haproxy/compiled/03-backends.cfg
+  assemble: src={{ etc_prefix }}/haproxy/backends.d dest={{ etc_prefix }}/haproxy/compiled/03-backends.cfg
 
 - name: 'Assemble the frontends configuration file'
-  assemble: src=/etc/haproxy/frontends.d dest=/etc/haproxy/compiled/04-frontends.cfg
+  assemble: src={{ etc_prefix }}/haproxy/frontends.d dest={{ etc_prefix }}/haproxy/compiled/04-frontends.cfg
 
 - name: 'Assemble the final configuration file'
-  assemble: src=/etc/haproxy/compiled dest=/etc/haproxy/haproxy.cfg backup=yes
+  assemble: src={{ etc_prefix }}/haproxy/compiled dest={{ etc_prefix }}/haproxy/haproxy.cfg backup=yes

@@ -6,7 +6,7 @@ Will install haproxy and configure it.
 Requirements
 ------------
 
-Only tested on ubuntu for now.
+Only tested on Ubuntu and SmartOS for now.
 
 Role Variables
 --------------
