@@ -72,3 +72,4 @@
 
 - name: 'Assemble the final configuration file'
   assemble: src={{ etc_prefix }}/haproxy/compiled dest={{ etc_prefix }}/haproxy/haproxy.cfg backup=yes
+  notify: restart haproxy
