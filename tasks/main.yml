@@ -39,7 +39,7 @@
   file: path={{ etc_prefix }}/haproxy/frontends.d state=directory
 
 - name: 'Empty the folder if not already empty'
-  command: rm -f {{ etc_prefix }}/haproxy/backends.d/*.cfg
+  command: rm -f {{ etc_prefix }}/haproxy/frontends.d/*.cfg
 
 - name: 'Build up the frontends'
   template: src=frontend.cfg dest={{ etc_prefix }}/haproxy/frontends.d/{{ item.name }}.cfg
@@ -47,7 +47,7 @@
   when: haproxy_frontends is defined
 
 - name: 'Create directory for the backends'
-  file: path={{ etc_prefix }}/haproxy/backends.d' state=directory
+  file: path={{ etc_prefix }}/haproxy/backends.d state=directory
 
 - name: 'Empty the folder if not already empty'
   command: rm -f {{ etc_prefix }}/haproxy/backends.d/*.cfg
