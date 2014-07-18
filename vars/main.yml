@@ -5,11 +5,15 @@ empty: true
 #  pidfile:
 #  maxconn:
 #  user:
+#  uid:
 #  group:
+#  gid:
 #  daemon:
+#  nbproc:
 #  spread_checks:
 #  stats:
 #      socket:
+#      timeout:
 #  log:
 #    - address:
 #      facility:
@@ -34,6 +38,14 @@ empty: true
 #    realm:
 #    auth:
 #    refresh:
+#  compression:
+#    algo:
+#    type:
+#    offload:
+#  http_check:
+#    disable_on_404:
+#    expect:
+#    send_state:
 #
 #haproxy_frontends:
 #  - name:
@@ -72,6 +84,30 @@ empty: true
 #    servers:
 #      - name:
 #        ip: 
+#        port:
+#        maxconn:
+#        params:
+#              - param1
+#    options:
+#        - forwardfor
+#
+#haproxy_listen:
+#  - name:
+#    bind:
+#    disabled:
+#    description:
+#    balance:
+#    log:
+#    retries:
+#    http-send-name-header:
+#    http-check-expect:
+#        - condition
+#    acl:
+#      - name:
+#        condition:
+#    servers:
+#      - name:
+#        ip:
 #        port:
 #        maxconn:
 #        params:
