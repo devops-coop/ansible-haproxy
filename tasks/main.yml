@@ -35,6 +35,10 @@
 - name: 'Enable it'
   copy: src=haproxy-default dest=/etc/default/haproxy
 
+- name: 'Ensure chroot directory exists'
+  file: name={{ haproxy_global.chroot }} state=directory
+  when: haproxy_global.chroot is defined and haproxy_global.chroot is not false
+
 - name: 'Create directory for the frontend'
   file: path={{ etc_prefix }}/haproxy/frontends.d state=directory
 
