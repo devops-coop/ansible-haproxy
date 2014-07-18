@@ -1,11 +1,22 @@
 ---
+## VAR SETUP
 - name: 'Set SmartOS etc prefix'
   set_fact: etc_prefix=/opt/local/etc
-  when: ansible_os_family == 'Solaris'
+  when: ansible_os_family == "Solaris"
+
+- name: 'Set SmartOS haproxy config location'
+  set_fact: config_location=/opt/local/etc/haproxy.cfg
+  when: ansible_os_family == "Solaris"
 
 - name: 'Set Ubuntu directory prefix'
   set_fact: etc_prefix=/etc
-  when: ansible_os_family == 'Debian'
+  when: ansible_os_family == "Debian"
+
+- name: 'Set Ubuntu haproxy config location'
+  set_fact: config_location=/etc/haproxy/haproxy.cfg
+  when: ansible_os_family == "Debian"
+
+## PACKAGE INSTALL
 
 - name: 'Installs haproxy as well as socat for socket api'
   apt: pkg={{ item }} state=installed
@@ -15,7 +26,7 @@
   when: ansible_os_family == 'Debian'
 
 - name: 'Installs haproxy as well as socat for socket api'
-  pkgin: name={{ item }} state=installed
+  pkgin: name={{ item }} state=present
   with_items:
     - haproxy
     - socat
@@ -71,5 +82,5 @@
   assemble: src={{ etc_prefix }}/haproxy/frontends.d dest={{ etc_prefix }}/haproxy/compiled/04-frontends.cfg
 
 - name: 'Assemble the final configuration file'
-  assemble: src={{ etc_prefix }}/haproxy/compiled dest={{ etc_prefix }}/haproxy/haproxy.cfg backup=yes
+  assemble: src={{ etc_prefix }}/haproxy/compiled dest={{ config_location }} backup=yes
   notify: restart haproxy
