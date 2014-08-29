@@ -1,8 +1,8 @@
 ---
 galaxy_info:
-  author: Pierre Paul Lefebvre
+  author: Pierre Paul Lefebvre, Rafe Colton
   description: Installs and configure haproxy
-  company: Pheromone
+  company: Pheromone, ModCloth
   license: Apache v2
   min_ansible_version: 1.5
   platforms:

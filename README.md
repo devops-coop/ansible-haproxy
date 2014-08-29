@@ -7,6 +7,8 @@ Requirements
 ------------
 
 Only tested on Ubuntu and SmartOS for now.
+Some features are only possible with haproxy 1.5 (like the compresion flags).
+Ubuntu 14.04 ships with haproxy 1.4.x.
 
 Role Variables
 --------------
@@ -54,3 +56,4 @@ Author Information
 ------------------
 
 Pheromone - Pierre Paul Lefebvre (lefebvre@pheromone.ca)
+ModCloth - Rafe Colton (https://github.com/rafecolton)
