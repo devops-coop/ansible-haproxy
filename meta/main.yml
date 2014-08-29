@@ -1,8 +1,8 @@
 ---
 galaxy_info:
-  author: Pierre Paul Lefebvre 
+  author: Pierre Paul Lefebvre
   description: Installs and configure haproxy
-  company: Pheromone 
+  company: Pheromone
   license: Apache v2
   min_ansible_version: 1.5
   platforms:
@@ -10,6 +10,7 @@ galaxy_info:
     versions:
     - precise
     - trusty
+  - name: SmartOS
   categories:
   - networking
   - system
