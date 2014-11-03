@@ -28,12 +28,13 @@ Example Playbook
 I *highly* suggest that you use a seperate variable file for this role (using the `vars_files` directive), but you can use it in the main playbook if you insist:
 
 ```yaml
-- hosts: loadbalances
+- hosts: loadbalancers
   roles:
      - role: haproxy
        haproxy_frontends:
        - name: 'fe-mysupersite'
          ip: '123.123.123.120'
+         port: '80'
          maxconn: '1000'
          default_backend: 'be-mysupersite'
        haproxy_backends:
