@@ -18,8 +18,12 @@
 
 ## PACKAGE INSTALL
 
+- name: 'Add haproxy apt repo'
+  apt_repository: repo="ppa:vbernat/haproxy-1.5" state=present update_cache=yes
+  when: ansible_os_family == "Debian"
+
 - name: 'Installs haproxy as well as socat for socket api'
-  apt: pkg={{ item }} state=installed
+  apt: pkg={{ item }} state=latest
   with_items:
     - haproxy
     - socat
