@@ -8,7 +8,7 @@ Requirements
 
 Only tested on Ubuntu and SmartOS for now.
 Some features are only possible with haproxy 1.5 (like the compresion flags).
-Ubuntu 14.04 ships with haproxy 1.4.x.
+This role will install the public repository to install haproxy 1.5 on ubuntu.
 
 Role Variables
 --------------
