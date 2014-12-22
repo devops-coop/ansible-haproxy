@@ -51,6 +51,8 @@ empty: true
 #  - name:
 #    ip:
 #    bind:
+#      - 192.168.1.1:80
+#      - 192.168.1.2:81
 #    maxconn:
 #    monitor:
 #      uri:
