@@ -1,0 +1,5 @@
+[epel]
+name=EPEL
+baseurl=http://dl.fedoraproject.org/pub/epel/{{ ansible_distribution_major_version }}/{{ ansible_architecture }}/
+enabled=1
+gpgcheck=0
