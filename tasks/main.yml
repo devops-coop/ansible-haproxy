@@ -41,7 +41,7 @@
 
 - name: 'Ensure chroot directory exists'
   file: name={{ haproxy_global.chroot }} state=directory
-  when: haproxy_global.chroot is defined and haproxy_global.chroot is not false
+  when: haproxy_global.chroot is defined and haproxy_global.chroot
 
 ## ASSEMBLE CONFIG - FRONTEND
 
