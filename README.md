@@ -6,14 +6,14 @@ Will install haproxy and configure it.
 Requirements
 ------------
 
-Only tested on Ubuntu and SmartOS for now.
+Only tested on CentOS, Ubuntu and SmartOS for now.
 Some features are only possible with haproxy 1.5 (like the compresion flags).
-This role will install the public repository to install haproxy 1.5 on ubuntu.
+This role will install the public repository to install haproxy 1.5 on ubuntu. Or it will install the EPEL repository on CentOS.
 
 Role Variables
 --------------
 
-There is a main dictionary that needs to be set named `haproxy`. 
+There is a main dictionary that needs to be set named `haproxy`.
 This dictionary has 4 main sections :
 - global
 - defaults
