@@ -37,7 +37,7 @@
   when: ansible_os_family == 'Solaris'
 
 - name: 'Enable it'
-  copy: src=haproxy-default dest=/etc/default/haproxy
+  service: name=haproxy enabled=yes
 
 - name: 'Ensure chroot directory exists'
   file: name={{ haproxy_global.chroot }} state=directory
