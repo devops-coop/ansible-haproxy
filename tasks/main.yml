@@ -45,6 +45,7 @@
   when: ansible_os_family == 'RedHat'
 
 - name: 'Add haproxy apt repo'
+  sudo: yes
   apt_repository: repo="ppa:vbernat/haproxy-1.5" state=present update_cache=yes
   when: ansible_os_family == "Debian"
 
