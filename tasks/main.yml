@@ -27,15 +27,15 @@
 ## PACKAGE INSTALL
 
 - name: 'Check epel repo'
-  stat: path=/etc/yum.repos.d/epel.repo
-  register: epel_file
+  command: yum repolist | grep -q EPEL
+  register: epel_repo_check
   when: ansible_pkg_mgr == 'yum'
 
 - name: 'Add epel repo'
   template: src=epel.repo
         dest=/etc/yum.repos.d/epel.repo
         owner=root group=root mode=0644
-  when: ansible_pkg_mgr == 'yum' and not epel_file.stat.exists
+  when: ansible_pkg_mgr == 'yum' and epel_repo_check.rc != 0
 
 - name: 'Installs haproxy as well as socat for socket api'
   yum: name={{ item }} state=latest
