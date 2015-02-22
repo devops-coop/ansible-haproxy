@@ -27,15 +27,15 @@
 ## PACKAGE INSTALL
 
 - name: 'Check epel repo'
-  stat: path=/etc/yum.repos.d/epel.repo
-  register: epel_file
+  command: yum repolist | grep -qi EPEL
+  register: epel_repo_check
   when: ansible_pkg_mgr == 'yum'
 
 - name: 'Add epel repo'
   template: src=epel.repo
         dest=/etc/yum.repos.d/epel.repo
         owner=root group=root mode=0644
-  when: ansible_pkg_mgr == 'yum' and not epel_file.stat.exists
+  when: ansible_pkg_mgr == 'yum' and epel_repo_check.rc != 0
 
 - name: 'Installs haproxy as well as socat for socket api'
   yum: name={{ item }} state=latest
@@ -76,7 +76,7 @@
   file: path={{ etc_prefix }}/haproxy/frontends.d state=directory
 
 - name: 'Empty the folder if not already empty'
-  command: rm -f {{ etc_prefix }}/haproxy/frontends.d/*.cfg
+  command: find {{ etc_prefix }}/haproxy/frontends.d -name *.cfg -exec rm -f {} \;
 
 - name: 'Build up the frontends'
   template: src=frontend.cfg dest={{ etc_prefix }}/haproxy/frontends.d/{{ item.name }}.cfg
@@ -89,7 +89,7 @@
   file: path={{ etc_prefix }}/haproxy/backends.d state=directory
 
 - name: 'Empty the folder if not already empty'
-  command: rm -f {{ etc_prefix }}/haproxy/backends.d/*.cfg
+  command: find {{ etc_prefix }}/haproxy/backends.d -name *.cfg -exec rm -f {} \;
 
 - name: 'Build up the backends'
   template: src=backend.cfg dest={{ etc_prefix }}/haproxy/backends.d/{{ item.name }}.cfg
@@ -102,7 +102,7 @@
   file: path={{ etc_prefix }}/haproxy/listen.d state=directory
 
 - name: 'Empty the folder if not already empty'
-  command: rm -f {{ etc_prefix }}/haproxy/listen.d/*.cfg
+  command: find {{ etc_prefix }}/haproxy/listen.d -name *.cfg -exec rm -f {} \;
 
 - name: 'Build up the listen sections'
   template: src=listen.cfg dest={{ etc_prefix }}/haproxy/listen.d/{{ item.name }}.cfg
@@ -115,7 +115,7 @@
   file: path={{ etc_prefix }}/haproxy/compiled state=directory
 
 - name: 'Empty the folder if not already empty'
-  command: rm -f {{ etc_prefix }}/haproxy/compiled/*.cfg
+  command: find {{ etc_prefix }}/haproxy/compiled -name *.cfg -exec rm -f {} \;
 
 - name: 'Build up the global config'
   template: src=global.cfg dest={{ etc_prefix }}/haproxy/compiled/01-global.cfg

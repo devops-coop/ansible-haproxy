@@ -11,6 +11,7 @@ galaxy_info:
     - precise
     - trusty
   - name: SmartOS
+  - name: CentOS
   categories:
   - networking
   - system
