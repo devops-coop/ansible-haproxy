@@ -12,6 +12,10 @@ galaxy_info:
     - trusty
   - name: SmartOS
   - name: CentOS
+  - name: Debian
+    versions:
+    - wheezy
+    - jessie
   categories:
   - networking
   - system

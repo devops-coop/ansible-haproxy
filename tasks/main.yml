@@ -16,11 +16,11 @@
   set_fact: config_location=/opt/local/etc/haproxy.cfg
   when: ansible_os_family == "Solaris"
 
-- name: 'Set Ubuntu directory prefix'
+- name: 'Set Debian/Ubuntu directory prefix'
   set_fact: etc_prefix=/etc
   when: ansible_os_family == "Debian"
 
-- name: 'Set Ubuntu haproxy config location'
+- name: 'Set Debian/Ubuntu haproxy config location'
   set_fact: config_location=/etc/haproxy/haproxy.cfg
   when: ansible_os_family == "Debian"
 
@@ -46,8 +46,13 @@
 
 - name: 'Add haproxy apt repo'
   sudo: yes
+  apt_repository: repo="deb http://http.debian.net/debian wheezy-backports main" state=present update_cache=yes
+  when: ansible_lsb.codename == "wheezy"
+
+- name: 'Add haproxy apt repo'
+  sudo: yes
   apt_repository: repo="ppa:vbernat/haproxy-1.5" state=present update_cache=yes
-  when: ansible_os_family == "Debian"
+  when: ansible_lsb.id == "Ubuntu"
 
 - name: 'Installs haproxy as well as socat for socket api'
   apt: pkg={{ item }} state=latest
