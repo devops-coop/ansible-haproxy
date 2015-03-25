@@ -27,7 +27,7 @@
 ## PACKAGE INSTALL
 
 - name: 'Check epel repo'
-  command: yum repolist | grep -qi EPEL
+  shell: yum repolist | grep -qi EPEL
   register: epel_repo_check
   when: ansible_pkg_mgr == 'yum'
 
