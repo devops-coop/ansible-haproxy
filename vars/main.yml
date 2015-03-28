@@ -23,7 +23,7 @@ empty: true
 #
 #haproxy_defaults:
 #  mode:
-#  log: 
+#  log:
 #  options:
 #    - <option>
 #  retries:
@@ -53,6 +53,9 @@ empty: true
 #    bind:
 #      - 192.168.1.1:80
 #      - 192.168.1.2:81
+#    ssl:
+#      cert: /etc/ssl/private/cert.pem
+#      ciphers: 'RC4-SHA:AES128-SHA:AES:!ADH:!aNULL:!DH:!EDH:!eNULL'
 #    maxconn:
 #    monitor:
 #      uri:
@@ -63,7 +66,7 @@ empty: true
 #        condition:
 #    rate-limit-sessions:
 #    block:
-#        - 
+#        -
 #    default_backend:
 #    use_backend:
 #      - name:
@@ -76,7 +79,7 @@ empty: true
 #    balance:
 #    log:
 #    retries:
-#    contimeout: 
+#    contimeout:
 #    http-send-name-header:
 #    http-check-expect:
 #        - condition
@@ -85,7 +88,7 @@ empty: true
 #        condition:
 #    servers:
 #      - name:
-#        ip: 
+#        ip:
 #        port:
 #        maxconn:
 #        params:
@@ -96,6 +99,9 @@ empty: true
 #haproxy_listen:
 #  - name:
 #    bind:
+#    ssl:
+#      cert: /etc/ssl/private/cert.pem
+#      ciphers: 'RC4-SHA:AES128-SHA:AES:!ADH:!aNULL:!DH:!EDH:!eNULL'
 #    disabled:
 #    description:
 #    balance:
