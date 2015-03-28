@@ -71,6 +71,8 @@ empty: true
 #    rate-limit-sessions:
 #    block:
 #        -
+#    options:
+#        - forwardfor
 #    default_backend:
 #    use_backend:
 #      - name:
