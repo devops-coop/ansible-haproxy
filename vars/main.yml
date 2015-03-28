@@ -64,6 +64,10 @@ empty: true
 #    acl:
 #      - name:
 #        condition:
+#    http-request:
+#      - action:
+#        param:
+#        condition:
 #    rate-limit-sessions:
 #    block:
 #        -
