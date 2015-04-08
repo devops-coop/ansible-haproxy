@@ -77,6 +77,9 @@ empty: true
 #    use_backend:
 #      - name:
 #        condition:
+#    timeout:
+#      - param:
+#        value:
 #
 #haproxy_backends:
 #  - name:
@@ -86,6 +89,8 @@ empty: true
 #    log:
 #    retries:
 #    contimeout:
+#    NOTE: contimeout is deprecated
+#          http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-contimeout
 #    http-send-name-header:
 #    http-check-expect:
 #        - condition
@@ -101,6 +106,9 @@ empty: true
 #              - param1
 #    options:
 #        - forwardfor
+#    timeout:
+#      - param:
+#        value:
 #
 #haproxy_listen:
 #  - name:
@@ -128,3 +136,6 @@ empty: true
 #              - param1
 #    options:
 #        - forwardfor
+#    timeout:
+#      - param:
+#        value:
