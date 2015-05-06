@@ -43,5 +43,7 @@ haproxy_defaults:
         file: /etc/haproxy/errors/500.http
       - code: 502
         file: /etc/haproxy/errors/502.http
+      - code: 503
+        file: /etc/haproxy/errors/503.http
       - code: 504
         file: /etc/haproxy/errors/504.http
