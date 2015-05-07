@@ -1,0 +1,26 @@
+---
+- hosts: localhost
+
+  roles:
+    - { role: ansible-haproxy,
+          haproxy_frontends: [
+            {
+              name: 'fe-mysupersite',
+              ip: '*',
+              port: '80',
+              maxconn: '1000',
+              default_backend: 'be-mysupersite',
+            }
+          ],
+          haproxy_backends: [
+            {
+              name: 'be-mysupersite',
+              description: 'mysupersite is really cool',
+              servers: [
+                {
+                  name: 'be-mysupersite-01',
+                  ip: '192.168.1.100'
+                }
+              ]
+            }
+          ] }

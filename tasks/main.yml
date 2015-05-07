@@ -47,12 +47,12 @@
 - name: 'Add haproxy apt repo'
   sudo: yes
   apt_repository: repo="deb http://http.debian.net/debian wheezy-backports main" state=present update_cache=yes
-  when: ansible_lsb.codename == "wheezy"
+  when: ansible_distribution_release == "wheezy"
 
 - name: 'Add haproxy apt repo'
   sudo: yes
   apt_repository: repo="ppa:vbernat/haproxy-1.5" state=present update_cache=yes
-  when: ansible_lsb.id == "Ubuntu"
+  when: ansible_distribution == "Ubuntu"
 
 - name: 'Installs haproxy as well as socat for socket api'
   apt: pkg={{ item }} state=latest
