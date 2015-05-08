@@ -1,0 +1,27 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: ansible_playbook
+  ansible_verbose: true
+  ansible_verbosity: 3
+  ansible_yum_repo: "https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm"
+  hosts: all
+
+platforms:
+  - name: trusty64
+    driver_config:
+      box: ubuntu/trusty64
+      box_url: https://atlas.hashicorp.com/ubuntu/trusty64
+      synced_folders: 
+        - ["~/shared", "/vagrant"]
+  - name: centos7
+    driver_config:
+      box: chef/centos-7.0
+      box_url: https://atlas.hashicorp.com/chef/centos-7.0
+      synced_folders: 
+        - ["~/shared", "/vagrant"]
+
+suites:
+  - name: default
