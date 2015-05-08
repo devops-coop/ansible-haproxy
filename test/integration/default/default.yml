@@ -23,4 +23,18 @@
                 }
               ]
             }
-          ] }
+          ],
+          haproxy_listen: [
+            {
+              name: "stats",
+              port: "1936",
+              stats:
+                {
+                  enabled: true,
+                  scopes: [ "fe-mysupersite", "be-mysupersite" ],
+                  uri: "/",
+                  realm: "Haproxy\\ Statistics",
+                  auth: "user:pass"
+                }
+            }
+          ]}

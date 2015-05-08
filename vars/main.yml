@@ -104,6 +104,7 @@ empty: true
 #
 #haproxy_listen:
 #  - name:
+#    port:
 #    bind:
 #    ssl:
 #      cert: /etc/ssl/private/cert.pem
@@ -125,6 +126,13 @@ empty: true
 #        port:
 #        maxconn:
 #        params:
-#              - param1
+#          - param1
 #    options:
-#        - forwardfor
+#      - forwardfor
+#    stats:
+#      enabled:
+#      scopes:
+#        -
+#      uri:
+#      realm:
+#      auth:
