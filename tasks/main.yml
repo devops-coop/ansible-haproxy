@@ -144,6 +144,10 @@
   template: src=defaults.cfg dest={{ etc_prefix }}/haproxy/compiled/02-defaults.cfg
   when: haproxy_defaults is defined
 
+- name: 'Build the web stats config'
+  template: src=web_stats.cfg dest={{ etc_prefix }}/haproxy/compiled/07-web_stats.cfg
+  when: haproxy_web_stats is defined
+
 ## ASSEMBLE FINAL CONFIG
 
 - name: 'Assemble the backends configuration file'
