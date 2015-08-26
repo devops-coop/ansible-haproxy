@@ -1,0 +1,76 @@
+---
+## VAR SETUP
+- name: 'Set CentOS directory prefix'
+  set_fact: etc_prefix=/etc
+  when: ansible_os_family == "RedHat"
+
+- name: 'Set CentOS haproxy config location'
+  set_fact: config_location=/etc/haproxy/haproxy.cfg
+  when: ansible_os_family == "RedHat"
+
+- name: 'Set SmartOS etc prefix'
+  set_fact: etc_prefix=/opt/local/etc
+  when: ansible_os_family == "Solaris"
+
+- name: 'Set SmartOS haproxy config location'
+  set_fact: config_location=/opt/local/etc/haproxy.cfg
+  when: ansible_os_family == "Solaris"
+
+- name: 'Set Debian/Ubuntu directory prefix'
+  set_fact: etc_prefix=/etc
+  when: ansible_os_family == "Debian"
+
+- name: 'Set Debian/Ubuntu haproxy config location'
+  set_fact: config_location=/etc/haproxy/haproxy.cfg
+  when: ansible_os_family == "Debian"
+
+## PACKAGE INSTALL
+
+- name: 'Check epel repo'
+  shell: yum repolist | grep -qi EPEL
+  register: epel_repo_check
+  when: ansible_pkg_mgr == 'yum'
+
+- name: 'Add epel repo'
+  template: src=epel.repo
+        dest=/etc/yum.repos.d/epel.repo
+        owner=root group=root mode=0644
+  when: ansible_pkg_mgr == 'yum' and epel_repo_check.rc != 0
+
+- name: 'Installs haproxy as well as socat for socket api'
+  yum: name={{ item }} state=latest
+  with_items:
+    - haproxy
+    - socat
+  when: ansible_os_family == 'RedHat'
+
+- name: 'Add haproxy apt repo'
+  sudo: yes
+  apt_repository: repo="deb http://http.debian.net/debian wheezy-backports main" state=present update_cache=yes
+  when: ansible_distribution_release == "wheezy"
+
+- name: 'Add haproxy apt repo'
+  sudo: yes
+  apt_repository: repo="ppa:vbernat/haproxy-1.5" state=present update_cache=yes
+  when: ansible_distribution == "Ubuntu"
+
+- name: 'Installs haproxy as well as socat for socket api'
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - haproxy
+    - socat
+  when: ansible_os_family == 'Debian'
+
+- name: 'Installs haproxy as well as socat for socket api'
+  pkgin: name={{ item }} state=present
+  with_items:
+    - haproxy
+    - socat
+  when: ansible_os_family == 'Solaris'
+
+- name: 'Enable it'
+  service: name=haproxy enabled=yes
+
+- name: 'Ensure chroot directory exists'
+  file: name={{ haproxy_global.chroot }} state=directory
+  when: haproxy_global.chroot is defined and haproxy_global.chroot
