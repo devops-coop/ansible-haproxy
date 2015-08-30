@@ -44,12 +44,17 @@
     - socat
   when: ansible_os_family == 'RedHat'
 
-- name: 'Add haproxy apt repo'
+- name: 'Add haproxy apt repo (squeeze)'
   sudo: yes
-  apt_repository: repo="deb http://http.debian.net/debian wheezy-backports main" state=present update_cache=yes
-  when: ansible_distribution_release == "wheezy"
+  apt_repository: repo="deb http://http.debian.net/debian squeeze-backports-sloppy main" state=present update_cache=yes
+  when: ansible_distribution_release == "squeeze"
 
-- name: 'Add haproxy apt repo'
+- name: 'Add haproxy apt repo (wheezy/jessie)'
+  sudo: yes
+  apt_repository: repo="deb http://http.debian.net/debian {{ ansible_distribution_release}}-backports main" state=present update_cache=yes
+  when: ansible_distribution_release == "squeeze" or ansible_distribution_release == "jessie"
+
+- name: 'Add haproxy apt repo (Ubuntu)'
   sudo: yes
   apt_repository: repo="ppa:vbernat/haproxy-1.5" state=present update_cache=yes
   when: ansible_distribution == "Ubuntu"
