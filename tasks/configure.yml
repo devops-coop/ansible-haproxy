@@ -37,6 +37,19 @@
   with_items: haproxy_listen
   when: haproxy_listen is defined
 
+## ASSEMBLE CONFIG - PEERS
+
+- name: 'Create directory for the peers sections'
+  file: path={{ etc_prefix }}/haproxy/peers.d state=directory
+
+- name: 'Empty the folder if not already empty'
+  command: find {{ etc_prefix }}/haproxy/peers.d -name *.cfg -exec rm -f {} \;
+
+- name: 'Build up the peers sections'
+  template: src=peer.cfg dest={{ etc_prefix }}/haproxy/peers.d/{{ item.name }}.cfg
+  with_items: haproxy_peers
+  when: haproxy_peers is defined
+
 ## ASSEMBLE CONFIG - USERLIST
 
 - name: 'Create directory for the userlists'
@@ -67,6 +80,7 @@
   template: src=defaults.cfg dest={{ etc_prefix }}/haproxy/compiled/02-defaults.cfg
   when: haproxy_defaults is defined
 
+
 ## ASSEMBLE FINAL CONFIG
 
 - name: 'Assemble the backends configuration file'
@@ -80,6 +94,10 @@
 
 - name: 'Assemble the userlists sections configuration file'
   assemble: src={{ etc_prefix }}/haproxy/userlists.d dest={{ etc_prefix }}/haproxy/compiled/06-userlists.cfg
+
+- name: 'Assemble the peers sections configuration file'
+  assemble: src={{ etc_prefix }}/haproxy/peers.d dest={{ etc_prefix }}/haproxy/compiled/07-peers.cfg
+
 
 - name: 'Assemble the final configuration file'
   assemble: src={{ etc_prefix }}/haproxy/compiled dest={{ config_location }} backup=yes

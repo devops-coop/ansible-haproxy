@@ -102,6 +102,12 @@ empty: true
 #    options:
 #        - forwardfor
 #
+#haproxy_peers:
+# - name:
+#   peers:
+#     - name:
+#	    ip:
+#       port:
 #haproxy_listen:
 #  - name:
 #    bind:
@@ -128,3 +134,8 @@ empty: true
 #              - param1
 #    options:
 #        - forwardfor
+#	 monitor_uri:
+#    stats:
+#        enabled:
+#        uri:
+#        auth: 
