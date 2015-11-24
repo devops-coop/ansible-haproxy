@@ -70,6 +70,7 @@
 
 - name: 'Enable it'
   service: name=haproxy enabled=yes
+  when: haproxy_service_start
 
 - name: 'Ensure chroot directory exists'
   file: name={{ haproxy_global.chroot }} state=directory
