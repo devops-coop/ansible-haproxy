@@ -51,7 +51,7 @@
 
 - name: 'Add haproxy apt repo'
   sudo: yes
-  apt_repository: repo="ppa:vbernat/haproxy-1.5" state=present update_cache=yes
+  apt_repository: repo="ppa:vbernat/haproxy-1.6" state=present update_cache=yes
   when: ansible_distribution == "Ubuntu"
 
 - name: 'Installs haproxy as well as socat for socket api'
