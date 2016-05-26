@@ -1,6 +1,6 @@
 ---
 # defaults file for haproxy
-haproxy_manage_config: true
+haproxy_manage_config: false
 haproxy_service_start: true
 haproxy_global:
   log:
