@@ -26,16 +26,9 @@
 
 ## PACKAGE INSTALL
 
-- name: 'Check epel repo'
-  shell: yum repolist | grep -qi EPEL
-  register: epel_repo_check
+- name: Add epel repo
+  yum_repository: "baseurl=http://dl.fedoraproject.org/pub/epel/{{ ansible_distribution_major_version }}/{{ ansible_architecture }}/ name=epel_7_x86_64 state=present description=EPEL gpgcheck=no"
   when: ansible_pkg_mgr == 'yum'
-
-- name: 'Add epel repo'
-  template: src=epel.repo
-        dest=/etc/yum.repos.d/epel.repo
-        owner=root group=root mode=0644
-  when: ansible_pkg_mgr == 'yum' and epel_repo_check.rc != 0
 
 - name: 'Installs haproxy as well as socat for socket api'
   yum: name={{ item }} state=latest
