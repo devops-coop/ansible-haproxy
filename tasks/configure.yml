@@ -8,8 +8,8 @@
 
 - name: 'Build up the frontends'
   template: src=frontend.cfg dest={{ etc_prefix }}/haproxy/frontends.d/{{ item.name }}.cfg
-  with_items: haproxy_frontends
-  when: haproxy_frontends is defined
+  with_items: docker_services
+  when: docker_services is defined
 
 ## ASSEMBLE CONFIG - BACKEND
 
@@ -21,8 +21,8 @@
 
 - name: 'Build up the backends'
   template: src=backend.cfg dest={{ etc_prefix }}/haproxy/backends.d/{{ item.name }}.cfg
-  with_items: haproxy_backends
-  when: haproxy_backends is defined
+  with_items: docker_services
+  when: docker_services is defined
 
 ## ASSEMBLE CONFIG - LISTEN
 

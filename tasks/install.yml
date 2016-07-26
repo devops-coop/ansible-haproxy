@@ -62,8 +62,11 @@
   when: ansible_os_family == 'Solaris'
 
 - name: 'Enable it'
-  service: name=haproxy enabled=yes
+  service: name=haproxy state=started enabled=yes
 
 - name: 'Ensure chroot directory exists'
   file: name={{ haproxy_global.chroot }} state=directory
   when: haproxy_global.chroot is defined and haproxy_global.chroot
+
+- name: Disable SELinux
+  selinux: policy=targeted state=disabled
