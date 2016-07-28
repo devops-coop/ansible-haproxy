@@ -27,3 +27,6 @@
 
 - name: Disable SELinux
   selinux: policy=targeted state=disabled
+
+- name: Enable the haproxy
+  service: name=haproxy enabled=yes
