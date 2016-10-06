@@ -1,5 +1,8 @@
-Role Name
+haproxy
 ========
+
+**This repository is unmaintained. We are looking for somebody, or an organisation to take over its maintenance. See [this issue](https://github.com/FloeDesignTechnologies/ansible-haproxy/issues/53) if you are interested.**
+
 
 Will install haproxy and configure it.
 
