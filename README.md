@@ -52,9 +52,3 @@ License
 -------
 
 Apache v2
-
-Author Information
-------------------
-
-Pheromone - Pierre Paul Lefebvre (lefebvre@pheromone.ca)
-ModCloth - Rafe Colton (https://github.com/rafecolton)
