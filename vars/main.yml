@@ -23,6 +23,12 @@ empty: true
 #      format:
 #  ssl_default_bind_options:
 #  ssl_default_bind_ciphers:
+#  tune:
+#    chksize: 32768
+#    ssl:
+#      default-dh-param: 2048
+#    zlib:
+#      memlevel: 9
 #
 #haproxy_defaults:
 #  mode:
