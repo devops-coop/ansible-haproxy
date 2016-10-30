@@ -20,6 +20,12 @@ empty: true
 #      level:
 #      minlevel:
 #      format:
+#  tune:
+#    chksize: 32768
+#    ssl:
+#      default-dh-param: 2048
+#    zlib:
+#      memlevel: 9
 #
 #haproxy_defaults:
 #  mode:
