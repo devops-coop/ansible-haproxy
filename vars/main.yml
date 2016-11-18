@@ -21,6 +21,8 @@ empty: true
 #      level:
 #      minlevel:
 #      format:
+#  ssl_default_bind_options:
+#  ssl_default_bind_ciphers:
 #
 #haproxy_defaults:
 #  mode:
