@@ -110,6 +110,7 @@ empty: true
 #    timeout:
 #      - param:
 #        value:
+#    appsession: 'JSESSIONID len 52 timeout 3h'
 #
 #haproxy_listen:
 #  - name:
