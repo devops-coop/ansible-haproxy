@@ -110,6 +110,9 @@ empty: true
 #    timeout:
 #      - param:
 #        value:
+#    errorfile:
+#      - code:
+#        file:
 #
 #haproxy_listen:
 #  - name:
