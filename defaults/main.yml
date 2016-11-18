@@ -1,5 +1,7 @@
 ---
+
 # defaults file for haproxy
+
 haproxy_manage_config: true
 haproxy_global:
   log:
