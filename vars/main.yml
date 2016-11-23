@@ -83,6 +83,12 @@ empty: true
 #    timeout:
 #      - param:
 #        value:
+#    reqadd:
+#      - "X-RequestHeader1:\\ some-value"
+#      - "X-RequestHeader2:\\ some-value"
+#    rspadd:
+#      - "X-ResponseHeader1:\\ some-value"
+#      - "X-ResponseHeader2:\\ some-value"
 #
 #haproxy_backends:
 #  - name:
