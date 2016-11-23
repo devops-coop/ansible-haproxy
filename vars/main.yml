@@ -145,3 +145,10 @@ empty: true
 #    timeout:
 #      - param:
 #        value:
+#    stats:
+#      enabled:
+#      hide_version:
+#      uri:
+#      realm:
+#      auth:
+#      refresh:
