@@ -50,3 +50,8 @@ haproxy_defaults:
         file: /etc/haproxy/errors/503.http
       - code: 504
         file: /etc/haproxy/errors/504.http
+
+haproxy_backends: []
+haproxy_frontends: []
+haproxy_listen: []
+haproxy_userlists: []
