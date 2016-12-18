@@ -67,11 +67,11 @@ empty: true
 #    acl:
 #      - name:
 #        condition:
-#    http-request:
+#    http_request:
 #      - action:
 #        param:
 #        condition:
-#    rate-limit-sessions:
+#    rate_limit_sessions:
 #    block:
 #        -
 #    options:
@@ -100,8 +100,8 @@ empty: true
 #    contimeout:
 #    NOTE: contimeout is deprecated
 #          http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-contimeout
-#    http-send-name-header:
-#    http-check-expect:
+#    http_send_name_header:
+#    http_check_expect:
 #        - condition
 #    acl:
 #      - name:
@@ -133,8 +133,8 @@ empty: true
 #    balance:
 #    log:
 #    retries:
-#    http-send-name-header:
-#    http-check-expect:
+#    http_send_name_header:
+#    http_check_expect:
 #        - condition
 #    acl:
 #      - name:
