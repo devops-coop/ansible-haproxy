@@ -14,6 +14,9 @@ haproxy_global:
   group: haproxy
   daemon: true
 
+haproxy_repo_version: '1.6'
+haproxy_package_version: '1.6'
+
 haproxy_defaults:
   mode: http
   log:
