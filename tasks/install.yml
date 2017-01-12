@@ -57,7 +57,7 @@
 - name: 'Installs haproxy as well as socat for socket api'
   apt: pkg={{ item }} state=present only_upgrade=true
   with_items:
-    - haproxy={{ haproxy_packet_version }}*
+    - haproxy={{ haproxy_package_version }}*
     - socat
   when: ansible_os_family == 'Debian'
 
