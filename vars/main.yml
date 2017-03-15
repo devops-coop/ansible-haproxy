@@ -21,6 +21,8 @@ empty: true
 #      level:
 #      minlevel:
 #      format:
+#  ssl_default_bind_options:
+#  ssl_default_bind_ciphers:
 #
 #haproxy_defaults:
 #  mode:
@@ -65,11 +67,11 @@ empty: true
 #    acl:
 #      - name:
 #        condition:
-#    http-request:
+#    http_request:
 #      - action:
 #        param:
 #        condition:
-#    rate-limit-sessions:
+#    rate_limit_sessions:
 #    block:
 #        -
 #    options:
@@ -81,6 +83,12 @@ empty: true
 #    timeout:
 #      - param:
 #        value:
+#    reqadd:
+#      - "X-RequestHeader1:\\ some-value"
+#      - "X-RequestHeader2:\\ some-value"
+#    rspadd:
+#      - "X-ResponseHeader1:\\ some-value"
+#      - "X-ResponseHeader2:\\ some-value"
 #
 #haproxy_backends:
 #  - name:
@@ -92,8 +100,8 @@ empty: true
 #    contimeout:
 #    NOTE: contimeout is deprecated
 #          http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#4-contimeout
-#    http-send-name-header:
-#    http-check-expect:
+#    http_send_name_header:
+#    http_check_expect:
 #        - condition
 #    acl:
 #      - name:
@@ -111,6 +119,9 @@ empty: true
 #      - param:
 #        value:
 #    appsession: 'JSESSIONID len 52 timeout 3h'
+#    errorfile:
+#      - code:
+#        file:
 #
 #haproxy_listen:
 #  - name:
@@ -123,8 +134,8 @@ empty: true
 #    balance:
 #    log:
 #    retries:
-#    http-send-name-header:
-#    http-check-expect:
+#    http_send_name_header:
+#    http_check_expect:
 #        - condition
 #    acl:
 #      - name:
@@ -141,3 +152,11 @@ empty: true
 #    timeout:
 #      - param:
 #        value:
+#    appsession: 'JSESSIONID len 52 timeout 3h'
+#    stats:
+#      enabled:
+#      hide_version:
+#      uri:
+#      realm:
+#      auth:
+#      refresh:
