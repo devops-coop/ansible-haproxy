@@ -132,6 +132,7 @@ empty: true
 #    timeout:
 #      - param:
 #        value:
+#    appsession: 'JSESSIONID len 52 timeout 3h'
 #    errorfile:
 #      - code:
 #        file:
@@ -165,6 +166,7 @@ empty: true
 #    timeout:
 #      - param:
 #        value:
+#    appsession: 'JSESSIONID len 52 timeout 3h'
 #    stats:
 #      enabled:
 #      hide_version:
