@@ -64,10 +64,16 @@ empty: true
 #      uri:
 #      fail:
 #        - <condition>
+#    condition:
+#      -
 #    acl:
 #      - name:
 #        condition:
 #    http_request:
+#      - action:
+#        param:
+#        condition:
+#    http_response:
 #      - action:
 #        param:
 #        condition:
