@@ -17,6 +17,12 @@ haproxy_global:
 haproxy_repo_version: '1.6'
 haproxy_package_version: '1.6'
 
+haproxy_frontends: []
+haproxy_backends: []
+haproxy_listen: []
+haproxy_peers: []
+haproxy_userlists: []
+
 haproxy_defaults:
   mode: http
   log:
