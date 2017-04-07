@@ -7,8 +7,19 @@
     path: "{{ etc_prefix }}/haproxy/frontends.d"
     state: directory
 
-- name: 'Empty the folder if not already empty'
-  command: find {{ etc_prefix }}/haproxy/frontends.d -name *.cfg -exec rm -f {} \;
+- name: "List files for the frontends"
+  find:
+    paths: "{{ etc_prefix }}/haproxy/frontends.d"
+    patterns: "*.cfg"
+  register: directory_contents
+  changed_when: false
+
+- name: "Remove unmanaged files for the frontends"
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  when: (item.path | basename) not in (haproxy_frontends | json_query('[*].name') | map('regex_replace',  '(.*)', '\\1.cfg') | list)
+  with_items: "{{ directory_contents.files }}"
 
 - name: 'Build up the frontends'
   template:
@@ -24,8 +35,19 @@
     path: "{{ etc_prefix }}/haproxy/backends.d"
     state: directory
 
-- name: 'Empty the folder if not already empty'
-  command: find {{ etc_prefix }}/haproxy/backends.d -name *.cfg -exec rm -f {} \;
+- name: "List files for the backends"
+  find:
+    paths: "{{ etc_prefix }}/haproxy/backends.d"
+    patterns: "*.cfg"
+  register: directory_contents
+  changed_when: false
+
+- name: "Remove unmanaged files for the backends"
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  when: (item.path | basename) not in (haproxy_backends | json_query('[*].name') | map('regex_replace',  '(.*)', '\\1.cfg') | list)
+  with_items: "{{ directory_contents.files }}"
 
 - name: 'Build up the backends'
   template:
@@ -41,8 +63,19 @@
     path: "{{ etc_prefix }}/haproxy/listen.d"
     state: directory
 
-- name: 'Empty the folder if not already empty'
-  command: find {{ etc_prefix }}/haproxy/listen.d -name *.cfg -exec rm -f {} \;
+- name: "List files the listen sections"
+  find:
+    paths: "{{ etc_prefix }}/haproxy/listen.d"
+    patterns: "*.cfg"
+  register: directory_contents
+  changed_when: false
+
+- name: "Remove unmanaged files the listen sections"
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  when: (item.path | basename) not in (haproxy_listen | json_query('[*].name') | map('regex_replace',  '(.*)', '\\1.cfg') | list)
+  with_items: "{{ directory_contents.files }}"
 
 - name: 'Build up the listen sections'
   template:
@@ -56,8 +89,19 @@
 - name: 'Create directory for the userlists'
   file: path={{ etc_prefix }}/haproxy/userlists.d state=directory
 
-- name: 'Empty the folder if not already empty'
-  command: find {{ etc_prefix }}/haproxy/userlists.d -name *.cfg -exec rm -f {} \;
+- name: "List files for the userlists"
+  find:
+    paths: "{{ etc_prefix }}/haproxy/userlists.d"
+    patterns: "*.cfg"
+  register: directory_contents
+  changed_when: false
+
+- name: "Remove unmanaged files for the userlists"
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  when: (item.path | basename) not in (haproxy_userlists | json_query('[*].name') | map('regex_replace',  '(.*)', '\\1.cfg') | list)
+  with_items: "{{ directory_contents.files }}"
 
 - name: 'Build up the userlist sections'
   template:
@@ -70,9 +114,6 @@
 
 - name: 'Create  the compiled folder'
   file: path={{ etc_prefix }}/haproxy/compiled state=directory
-
-- name: 'Empty the folder if not already empty'
-  command: find {{ etc_prefix }}/haproxy/compiled -name *.cfg -exec rm -f {} \;
 
 - name: 'Build up the global config'
   template:
