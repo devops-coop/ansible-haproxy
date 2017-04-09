@@ -27,6 +27,11 @@ empty: true
 #haproxy_defaults:
 #  mode:
 #  log:
+#    - address:
+#      facility:
+#      level:
+#      minlevel:
+#      format:
 #  options:
 #    - <option>
 #  retries:
