@@ -1,31 +1,38 @@
 haproxy
 ========
 
-Will install haproxy and configure it.
+Installs and configures [HAProxy 1.5](http://www.haproxy.org/).
 
-Requirements
-------------
+Features
+--------
 
-Only tested on CentOS, Ubuntu and SmartOS for now.
-Some features are only possible with haproxy 1.5 (like the compresion flags).
-This role will install the public repository to install haproxy 1.5 on ubuntu. Or it will install the EPEL repository on CentOS.
+* Supports CentOS, Debian, Ubuntu, and SmartOS.
+* Installs HAProxy 1.5 from official repositories on Debian, Ubuntu, and SmartOS.
+* Installs EPEL repository on CentOS.
 
 Role Variables
 --------------
 
-There is a main dictionary that needs to be set named `haproxy`.
-This dictionary has 4 main sections :
-- global
-- defaults
-- frontends
-- backends
+* `haproxy_global`
 
-Each section has the most used parameters that I can think of. This role does not have (yet) full coverage of the main haproxy project. Feel free to submit a pull request if something is missing for you.
+    Global HAProxy settings.
+* `haproxy_defaults`
 
-Example Playbook
--------------------------
+    Default settings for frontends, backends, and listen proxies.
+* `haproxy_backends`
 
-I *highly* suggest that you use a seperate variable file for this role (using the `vars_files` directive), but you can use it in the main playbook if you insist:
+    A list of HAProxy backends.
+* `haproxy_frontends`
+
+    A list of HAProxy frontends.
+* `haproxy_listen`
+
+    A list of listen proxies.
+
+See [`vars/main.yml`](vars/main.yml) for a complete list of configurable .
+
+Example
+-------
 
 ```yaml
 - hosts: loadbalancers
@@ -44,9 +51,6 @@ I *highly* suggest that you use a seperate variable file for this role (using th
            - name: 'be-mysupersite-01'
              ip: '192.168.1.100'
 ```
-
-See [the full example](https://github.com/Pheromone/ansible-haproxy/blob/master/vars/main.yml) to see all options.
-
 
 License
 -------
