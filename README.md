@@ -3,6 +3,13 @@ haproxy
 
 Installs and configures [HAProxy 1.5](http://www.haproxy.org/).
 
+Versions
+--------
+
+**WARNING:** This is the README for the `master` branch, which tracks the development of version 2 and targets Ansible 2.x. This branch is under active development and will include breaking changes.
+
+The most recent release in the 1.x series is [1.1.0](https://github.com/devops-coop/ansible-haproxy/tree/v1.1.0).
+
 Features
 --------
 
