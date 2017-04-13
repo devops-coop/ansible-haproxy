@@ -1,0 +1,2 @@
+etc_prefix: /etc
+config_location: "{{ etc_prefix }}/haproxy/haproxy.cfg"

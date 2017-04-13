@@ -1,38 +1,10 @@
 ---
-
-## VAR SETUP
-
-- name: 'Set CentOS directory prefix'
-  set_fact:
-    etc_prefix: "/etc"
-  when: ansible_os_family == "RedHat"
-
-- name: 'Set CentOS haproxy config location'
-  set_fact:
-    config_location: "/etc/haproxy/haproxy.cfg"
-  when: ansible_os_family == "RedHat"
-
-- name: 'Set Debian/Ubuntu directory prefix'
-  set_fact:
-    etc_prefix: "/etc"
-  when: ansible_os_family == "Debian"
-
-- name: 'Set Debian/Ubuntu haproxy config location'
-  set_fact:
-    config_location: "/etc/haproxy/haproxy.cfg"
-  when: ansible_os_family == "Debian"
-
-- name: 'Set Alpine directory prefix'
-  set_fact:
-    etc_prefix: "/etc"
-  when: ansible_os_family == "Alpine"
-
-- name: 'Set Alpine haproxy config location'
-  set_fact:
-    config_location: "/etc/haproxy/haproxy.cfg"
-  when: ansible_os_family == "Alpine"
-
-## PACKAGE INSTALL
+- name: Include distribution variables
+  include_vars:
+  with_first_found:
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+    - default.yml
 
 - name: 'Check epel repo'
   shell: yum repolist | grep -qi EPEL
