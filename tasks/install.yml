@@ -68,7 +68,6 @@
   when: ansible_os_family == 'RedHat'
 
 - name: 'Add haproxy apt repo (squeeze)'
-  sudo: yes
   apt_repository:
     repo: deb http://http.debian.net/debian {{ ansible_distribution_release }}-backports-sloppy main
     state: present
@@ -76,7 +75,6 @@
   when: ansible_distribution_release == 'squeeze'
 
 - name: Add haproxy apt repo (wheezy/jessie)
-  sudo: yes
   apt_repository:
     repo: deb http://http.debian.net/debian {{ ansible_distribution_release }}-backports main
     state: present
@@ -84,7 +82,6 @@
   when: ansible_distribution_release == 'wheezy' or ansible_distribution_release == 'jessie'
 
 - name: 'Add haproxy apt repo (Ubuntu)'
-  sudo: yes
   apt_repository:
     repo: "ppa:vbernat/haproxy-1.5"
     state: present
