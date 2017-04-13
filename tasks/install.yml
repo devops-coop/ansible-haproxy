@@ -20,15 +20,6 @@
     mode: "0644"
   when: ansible_pkg_mgr == "yum" and epel_repo_check is defined and epel_repo_check.rc != 0
 
-- name: 'Installs haproxy as well as socat for socket api'
-  yum:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - haproxy
-    - socat
-  when: ansible_os_family == 'RedHat'
-
 - name: 'Add haproxy apt repo (squeeze)'
   apt_repository:
     repo: deb http://http.debian.net/debian {{ ansible_distribution_release }}-backports-sloppy main
@@ -50,23 +41,14 @@
     update_cache: yes
   when: ansible_distribution == "Ubuntu"
 
-- name: 'Installs haproxy as well as socat for socket api'
-  apt:
-    pkg: "{{ item }}"
-    state: latest
-  with_items:
-    - haproxy
-    - socat
-  when: ansible_os_family == 'Debian'
+- name: Install HAProxy
+  package:
+    name: "{{ haproxy_package_name }}"
 
-- name: 'Installs haproxy as well as socat for socket api'
-  apk:
-    pkg: "{{ item}}"
-    state: latest
-  with_items:
-    - haproxy
-    - socat
-  when: ansible_os_family == 'Alpine'
+- name: Install supplementary packages
+  package:
+    name: "{{ item }}"
+  with_items: "{{ haproxy_extra_packages }}"
 
 - name: 'Enable it'
   service:

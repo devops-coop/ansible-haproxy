@@ -4,6 +4,9 @@
 haproxy_config_dir: "{{ _haproxy_config_dir }}"
 haproxy_config_file: "{{ _haproxy_config_dir }}/haproxy.cfg"
 
+haproxy_package_name: "{{ _haproxy_package_name }}"
+haproxy_extra_packages: "{{ _haproxy_extra_packages }}"
+
 haproxy_manage_config: true
 haproxy_global:
   log:
