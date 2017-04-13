@@ -12,16 +12,6 @@
     config_location: "/etc/haproxy/haproxy.cfg"
   when: ansible_os_family == "RedHat"
 
-- name: 'Set SmartOS etc prefix'
-  set_fact:
-    etc_prefix: "/opt/local/etc"
-  when: ansible_os_family == "Solaris"
-
-- name: 'Set SmartOS haproxy config location'
-  set_fact:
-    config_location: "/opt/local/etc/haproxy.cfg"
-  when: ansible_os_family == "Solaris"
-
 - name: 'Set Debian/Ubuntu directory prefix'
   set_fact:
     etc_prefix: "/etc"
@@ -96,15 +86,6 @@
     - haproxy
     - socat
   when: ansible_os_family == 'Debian'
-
-- name: 'Installs haproxy as well as socat for socket api'
-  pkgin:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - haproxy
-    - socat
-  when: ansible_os_family == 'Solaris'
 
 - name: 'Installs haproxy as well as socat for socket api'
   apk:
