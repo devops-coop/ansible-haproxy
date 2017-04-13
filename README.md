@@ -13,7 +13,7 @@ The most recent release in the 1.x series is [1.1.0](https://github.com/devops-c
 Features
 --------
 
-* Supports CentOS, Debian, Ubuntu, and SmartOS.
+* Supports Alpine, CentOS, Debian, Ubuntu, and SmartOS.
 * Installs HAProxy 1.5 from official repositories on Debian, Ubuntu, and SmartOS.
 * Installs EPEL repository on CentOS.
 

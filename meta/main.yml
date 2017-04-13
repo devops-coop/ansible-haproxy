@@ -16,6 +16,7 @@ galaxy_info:
     versions:
     - wheezy
     - jessie
+  - name: Alpine
   categories:
   - networking
   - system
