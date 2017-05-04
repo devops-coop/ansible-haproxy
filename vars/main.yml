@@ -70,6 +70,7 @@ empty: true
 #    ssl:
 #      cert: /etc/ssl/private/cert.pem
 #      ciphers: 'RC4-SHA:AES128-SHA:AES:!ADH:!aNULL:!DH:!EDH:!eNULL'
+#      alpn: h2
 #    maxconn:
 #    monitor:
 #      uri:
