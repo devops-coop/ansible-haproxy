@@ -5,10 +5,12 @@
 ### Added
 
 * [#78] Added support for Alpine Linux. Thanks, **[\@roedie]**!
+* [#89] Added ACLs to backend. Thanks, **[\@aarnaud]**!
 
 ### Changed
 
 * [#71] This role no longer elevates permissions itself. Set `become` at the playbook level.
+* [#85] The default TLS configuration earns an A from SSL Labs. Thanks, **[\@reminec]**!
 
 ### Fixed
 
@@ -74,6 +76,8 @@
 [#72]: https://github.com/devops-coop/ansible-haproxy/issues/72
 [#73]: https://github.com/devops-coop/ansible-haproxy/issues/73
 [#78]: https://github.com/devops-coop/ansible-haproxy/issues/78
+[#85]: https://github.com/devops-coop/ansible-haproxy/issues/85
+[#89]: https://github.com/devops-coop/ansible-haproxy/issues/89
 [\@UnderGreen]: https://github.com/UnderGreen
 [\@aarnaud]: https://github.com/aarnaud
 [\@clwells]: https://github.com/clwells
@@ -83,4 +87,5 @@
 [\@nathanielks]: https://github.com/nathanielks
 [\@noirbee]: https://github.com/noirbee
 [\@onitake]: https://github.com/onitake
+[\@reminec]: https://github.com/reminec
 [\@roedie]: https://github.com/roedie
