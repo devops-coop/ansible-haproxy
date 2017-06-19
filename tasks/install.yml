@@ -9,6 +9,7 @@
 - name: 'Check epel repo'
   shell: yum repolist | grep -qi EPEL
   register: epel_repo_check
+  check_mode: false
   when: ansible_pkg_mgr == "yum"
 
 - name: 'Add epel repo'
