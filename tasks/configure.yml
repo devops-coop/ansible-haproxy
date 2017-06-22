@@ -155,4 +155,5 @@
     src: "{{ haproxy_config_dir }}/compiled"
     dest: "{{ haproxy_config_file }}"
     backup: yes
+    validate: "haproxy -c -f %s"
   notify: restart haproxy
