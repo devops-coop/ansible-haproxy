@@ -42,9 +42,27 @@
     update_cache: yes
   when: ansible_distribution == "Ubuntu"
 
-- name: Install HAProxy
+- name: Install HAProxy (yum)
+  yum:
+    name: "{{ haproxy_package_name }}"
+  when: ansible_pkg_mgr == "yum"
+
+- name: Install HAProxy (apt squeeze)
+  apt:
+    name: "{{ haproxy_package_name }}"
+    default_release: "{{ansible_distribution_release}}-backports-sloppy"
+  when: ansible_distribution_release == 'squeeze'
+
+- name: Install HAProxy (apt wheezy/jessie)
+  apt:
+    name: "{{ haproxy_package_name }}"
+    default_release: "{{ansible_distribution_release}}-backports"
+  when: ansible_distribution_release == 'wheezy' or ansible_distribution_release == 'jessie'
+
+- name: Install HAProxy (Ubuntu)
   package:
     name: "{{ haproxy_package_name }}"
+  when: ansible_distribution == 'ubuntu'
 
 - name: Install supplementary packages
   package:
