@@ -1,2 +1,4 @@
+*.py[co]
 *.swp
 .kitchen
+__pycache__/
