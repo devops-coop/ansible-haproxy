@@ -44,6 +44,8 @@ empty: true
 #  timeout:
 #    - param:
 #      value:
+#  balance:
+#  cookie:
 #  maxconn:
 #  stats:
 #    enabled:
@@ -120,6 +122,7 @@ empty: true
 #    disabled:
 #    description:
 #    balance:
+#    cookie:
 #    log:
 #    retries:
 #    contimeout:
@@ -157,6 +160,7 @@ empty: true
 #    disabled:
 #    description:
 #    balance:
+#    cookie:
 #    log:
 #    retries:
 #    http_send_name_header:
