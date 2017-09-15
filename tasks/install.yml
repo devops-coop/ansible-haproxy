@@ -62,7 +62,7 @@
 - name: Install HAProxy (Ubuntu)
   package:
     name: "{{ haproxy_package_name }}"
-  when: ansible_distribution == 'ubuntu'
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Install supplementary packages
   package:
