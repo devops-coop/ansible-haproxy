@@ -63,6 +63,18 @@ empty: true
 #    expect:
 #    send_state:
 #
+#haproxy_resolvers:
+#  - name:
+#    nameservers:
+#      - name:
+#        ip:
+#        port:
+#    hold:
+#      - status:
+#        period:
+#    resolve_retries:
+#    timeout_retry:
+#
 #haproxy_frontends:
 #  - name:
 #    ip:
