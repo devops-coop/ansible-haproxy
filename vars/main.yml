@@ -150,6 +150,20 @@ empty: true
 #    errorfile:
 #      - code:
 #        file:
+#    reqadd:
+#      - "X-RequestHeader1:\\ some-value"
+#      - "X-RequestHeader2:\\ some-value"
+#    rspadd:
+#      - "X-ResponseHeader1:\\ some-value"
+#      - "X-ResponseHeader2:\\ some-value"
+#    reqrep:
+#      - "^Host:\ www.(.*)$ Host:\ \1 if host_www"
+#    reqirep:
+#      - "^Host:\ www.(.*)$ Host:\ \1 if host_www"
+#    rsprep:
+#      - "^Location:\ 127.0.0.1:8080 Location:\ www.mydomain.com"
+#    rspirep:
+#      - "^Location:\ 127.0.0.1:8080 Location:\ www.mydomain.com"
 #
 #haproxy_listen:
 #  - name:
@@ -181,6 +195,20 @@ empty: true
 #    timeout:
 #      - param:
 #        value:
+#    reqadd:
+#      - "X-RequestHeader1:\\ some-value"
+#      - "X-RequestHeader2:\\ some-value"
+#    rspadd:
+#      - "X-ResponseHeader1:\\ some-value"
+#      - "X-ResponseHeader2:\\ some-value"
+#    reqrep:
+#      - "^Host:\ www.(.*)$ Host:\ \1 if host_www"
+#    reqirep:
+#      - "^Host:\ www.(.*)$ Host:\ \1 if host_www"
+#    rsprep:
+#      - "^Location:\ 127.0.0.1:8080 Location:\ www.mydomain.com"
+#    rspirep:
+#      - "^Location:\ 127.0.0.1:8080 Location:\ www.mydomain.com"
 #    appsession: 'JSESSIONID len 52 timeout 3h'
 #    stats:
 #      enabled:
