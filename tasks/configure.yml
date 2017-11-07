@@ -1,5 +1,33 @@
 ---
 
+## ASSEMBLE CONFIG - RESOLVERS
+
+- name: 'Create directory for the resolvers'
+  file:
+    path: "{{ haproxy_config_dir }}/resolvers.d"
+    state: directory
+
+- name: "List files for the resolvers"
+  find:
+    paths: "{{ haproxy_config_dir }}/resolvers.d"
+    patterns: "*.cfg"
+  register: directory_contents
+  changed_when: false
+
+- name: "Remove unmanaged files for the resolvers"
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  when: (item.path | basename) not in (haproxy_resolvers | json_query('[*].name') | map('regex_replace',  '(.*)', '\\1.cfg') | list)
+  with_items: "{{ directory_contents.files }}"
+
+- name: 'Build up the resolvers'
+  template:
+    src: "resolvers.cfg"
+    dest: "{{ haproxy_config_dir }}/resolvers.d/{{ item.name }}.cfg"
+  with_items: "{{ haproxy_resolvers }}"
+  when: haproxy_resolvers is defined
+
 ## ASSEMBLE CONFIG - FRONTEND
 
 - name: 'Create directory for the frontend'
@@ -112,8 +140,15 @@
 
 ## ASSEMBLE CONFIG - GLOBAL & DEFAULT
 
-- name: 'Create  the compiled folder'
-  file: path={{ haproxy_config_dir }}/compiled state=directory
+- name: 'Delete the compiled folder'
+  file:
+    path: "{{ haproxy_config_dir }}/compiled"
+    state: absent
+
+- name: 'Create the compiled folder'
+  file:
+    path: "{{ haproxy_config_dir }}/compiled"
+    state: directory
 
 - name: 'Build up the global config'
   template:
@@ -130,25 +165,30 @@
 
 ## ASSEMBLE FINAL CONFIG
 
+- name: 'Assemble the resolvers sections configuration file'
+  assemble:
+    src: "{{ haproxy_config_dir }}/resolvers.d"
+    dest: "{{ haproxy_config_dir }}/compiled/03-resolvers.cfg"
+
 - name: 'Assemble the backends configuration file'
   assemble:
     src: "{{ haproxy_config_dir }}/backends.d"
-    dest: "{{ haproxy_config_dir }}/compiled/03-backends.cfg"
+    dest: "{{ haproxy_config_dir }}/compiled/04-backends.cfg"
 
 - name: 'Assemble the frontends configuration file'
   assemble:
     src: "{{ haproxy_config_dir }}/frontends.d"
-    dest: "{{ haproxy_config_dir }}/compiled/04-frontends.cfg"
+    dest: "{{ haproxy_config_dir }}/compiled/05-frontends.cfg"
 
 - name: 'Assemble the listen sections configuration file'
   assemble:
     src: "{{ haproxy_config_dir }}/listen.d"
-    dest: "{{ haproxy_config_dir }}/compiled/05-listen.cfg"
+    dest: "{{ haproxy_config_dir }}/compiled/06-listen.cfg"
 
 - name: 'Assemble the userlists sections configuration file'
   assemble:
     src: "{{ haproxy_config_dir }}/userlists.d"
-    dest: "{{ haproxy_config_dir }}/compiled/06-userlists.cfg"
+    dest: "{{ haproxy_config_dir }}/compiled/07-userlists.cfg"
 
 - name: 'Assemble the final configuration file'
   assemble:
