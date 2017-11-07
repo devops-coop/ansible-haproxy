@@ -173,6 +173,7 @@ empty: true
 #      ciphers: 'RC4-SHA:AES128-SHA:AES:!ADH:!aNULL:!DH:!EDH:!eNULL'
 #    disabled:
 #    description:
+#    maxconn:
 #    balance:
 #    cookie:
 #    log:
