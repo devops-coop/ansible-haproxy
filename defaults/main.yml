@@ -14,9 +14,9 @@ _haproxy_ssl_ciphers: 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305
 
 haproxy_global:
   log:
-    - address: /dev/log
+    - address: "{{ _haproxy_log_address }}"
       facility: local0
-    - address: /dev/log
+    - address: "{{ _haproxy_log_address }}"
       facility: local1
       level: notice
   chroot: /var/lib/haproxy
@@ -34,7 +34,7 @@ haproxy_global:
 haproxy_defaults:
   mode: http
   log:
-    - address: /dev/log
+    - address: "{{ _haproxy_log_address }}"
       facility: local1
       level: notice
   timeout:
