@@ -128,6 +128,7 @@ empty: true
 #      - "^Location:\ 127.0.0.1:8080 Location:\ www.mydomain.com"
 #    rspirep:
 #      - "^Location:\ 127.0.0.1:8080 Location:\ www.mydomain.com"
+#    force_persist:
 #
 #haproxy_backends:
 #  - name:
@@ -176,6 +177,7 @@ empty: true
 #      - "^Location:\ 127.0.0.1:8080 Location:\ www.mydomain.com"
 #    rspirep:
 #      - "^Location:\ 127.0.0.1:8080 Location:\ www.mydomain.com"
+#    force_persist:
 #
 #haproxy_listen:
 #  - name:
@@ -230,3 +232,4 @@ empty: true
 #      realm:
 #      auth:
 #      refresh:
+#    force_persist:
