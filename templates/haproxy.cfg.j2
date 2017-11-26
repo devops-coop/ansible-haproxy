@@ -1,0 +1,12 @@
+{%- import '_macros.j2' as macros with context -%}
+# {{ ansible_managed }}
+
+{{ macros.section('global', haproxy_global, single=True) -}}
+{{- macros.section('defaults', haproxy_defaults, single=True) -}}
+{{- macros.section('peers', haproxy_peers) -}}
+{{- macros.section('resolvers', haproxy_resolvers) -}}
+{{- macros.section('mailers', haproxy_mailers) -}}
+{{- macros.section('userlist', haproxy_userlists) -}}
+{{- macros.section('frontend', haproxy_frontends) -}}
+{{- macros.section('backend', haproxy_backends) -}}
+{{- macros.section('listen', haproxy_listens) -}}

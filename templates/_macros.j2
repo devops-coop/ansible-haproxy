@@ -11,3 +11,22 @@
 
     {% endfor -%}
 {%- endmacro -%}
+
+{% macro section(section, group, single=False) %}
+{% if group is defined %}
+{% if single %}
+
+{{ section }}
+{{ group|to_haproxy|join('\n')|indent(indentfirst=True) }}
+
+
+{% else %}
+{% for name, options in group.items() %}
+{{ section }} {{ name }}
+{{ options|to_haproxy|join('\n')|indent(indentfirst=True) }}
+
+{% endfor %}
+
+{% endif %}
+{% endif %}
+{% endmacro %}
