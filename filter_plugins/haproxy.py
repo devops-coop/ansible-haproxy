@@ -45,48 +45,39 @@ def haproxy_sort(options):
     )
 
 
-def flatten(iterable):
-    """
-    Flatten nested iterables to a single level.
-    """
-    for item in iterable:
-        if isinstance(item, collections.Iterable) and not isinstance(item, string_types):
-            for subitem in flatten(item):
-                yield subitem
-        else:
-            yield item
-
-
 def expand(options):
     """
     Expand a nested configuration dictionary.
     """
     for key, value in options.items():
-        if isinstance(value, collections.Mapping):
-            yield (key, value.items())
-        elif isinstance(value, string_types):
+        if not isinstance(value, collections.Container) or isinstance(value, string_types):
             yield (key, value)
-        elif isinstance(value, collections.Iterable):
+            continue
+        elif isinstance(value, collections.Sequence):
             for item in value:
                 yield (key, item)
-        elif value is True:
-            yield (key, None)
-        else:
-            yield (key, value)
+            continue
+        elif isinstance(value, collections.Mapping):
+            yield (key, list(expand(value)))
+            continue
+        yield (key, value)
 
 
 def to_haproxy(options):
     """
     Yield HAProxy configuration lines from a nested configuration dictionary.
     """
-    options = haproxy_sort(options)
-    for key, value in expand(options):
-        if value is None:
-            yield key
-            continue
-        if not isinstance(value, collections.Iterable) or isinstance(value, string_types):
-            value = [value]
-        yield '{} {}'.format(key, ' '.join(str(v) for v in flatten(value)))
+    options = expand(haproxy_sort(options))
+    for key, value in options:
+        if value is True:
+            yield str(key)
+        elif value is False:
+            yield 'no {}'.format(key)
+        elif isinstance(value, collections.Sequence) and not isinstance(value, string_types):
+            for sub_key, sub_value in value:
+                yield '{} {} {}'.format(key, sub_key, sub_value)
+        else:
+            yield '{} {}'.format(key, value)
 
 
 class FilterModule(object):

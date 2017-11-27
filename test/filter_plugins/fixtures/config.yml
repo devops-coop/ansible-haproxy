@@ -1,0 +1,52 @@
+---
+haproxy_defaults:
+  log: global
+  mode: http
+  option:
+    - httplog
+    - dontlognull
+  timeout:
+    connect: 5000
+    client: 50000
+    server: 50000
+  errorfile:
+    400: /etc/haproxy/errors/400.http
+    403: /etc/haproxy/errors/403.http
+    408: /etc/haproxy/errors/408.http
+    500: /etc/haproxy/errors/500.http
+    502: /etc/haproxy/errors/502.http
+    503: /etc/haproxy/errors/503.http
+    504: /etc/haproxy/errors/504.http
+
+
+haproxy_global:
+  log:
+    /dev/log:
+      - local0
+      - local1 notice
+  chroot: /var/lib/haproxy
+  stats:
+    socket: /run/haproxy/admin.sock mode 660 level admin
+    timeout: 30s
+  user: haproxy
+  group: haproxy
+  daemon: true
+  ca-base: /etc/ssl/certs
+  crt-base: /etc/ssl/private
+  ssl-default-bind-ciphers: ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS
+  ssl-default-bind-options: no-sslv3
+
+
+haproxy_mailers:
+
+haproxy_peers:
+
+haproxy_resolvers:
+
+haproxy_userlists:
+
+haproxy_listens:
+
+haproxy_frontends:
+
+haproxy_backends:
