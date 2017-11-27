@@ -1,4 +1,8 @@
+*.egg-info/
 *.py[co]
 *.swp
+.cache/
+.coverage
 .kitchen
+.tox/
 __pycache__/
