@@ -1,6 +1,7 @@
 {%- import '_macros.j2' as macros with context -%}
 # {{ ansible_managed }}
 
+
 {{ macros.section('global', haproxy_global, single=True) -}}
 {{- macros.section('defaults', haproxy_defaults, single=True) -}}
 {{- macros.section('peers', haproxy_peers) -}}

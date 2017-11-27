@@ -1,27 +1,12 @@
-{%- macro http_response(responses = []) -%}
-    {%- for response in responses -%}
-        http-response {{ response.action }}{% if response.param is defined %} {{ response.param }}{% endif %}{% if response.condition is defined %} {{ response.condition }}{% endif %}
-
-    {% endfor -%}
-{%- endmacro -%}
-
-{%- macro http_request(requests = []) -%}
-    {%- for request in requests -%}
-        http-request {{ request.action }}{% if request.param is defined %} {{ request.param }}{% endif %}{% if request.condition is defined %} {{ request.condition }}{% endif %}
-
-    {% endfor -%}
-{%- endmacro -%}
-
-{% macro section(section, group, single=False) %}
-{% if group is defined %}
+{% macro section(section, instances, single=False) %}
+{% if instances is defined %}
 {% if single %}
-
 {{ section }}
-{{ group|to_haproxy|join('\n')|indent(indentfirst=True) }}
+{{ instances|to_haproxy|join('\n')|indent(indentfirst=True) }}
 
 
 {% else %}
-{% for name, options in group.items() %}
+{% for name, options in instances.items() %}
 {{ section }} {{ name }}
 {{ options|to_haproxy|join('\n')|indent(indentfirst=True) }}
 
