@@ -149,3 +149,6 @@ haproxy_listens:
       mail: 192.0.2.1:587 weight 0
       imap: 192.0.2.1:993 weight 0
       default: 192.0.2.2:443 check
+  listen2:
+    log: false
+    disabled: true
