@@ -74,3 +74,49 @@ haproxy_userlists:
     - user tiger password $6$k6y3o.eP$JlKBx(...)xHSwRv6J.C0/D7cV91 groups G1
     - user scott insecure-password elgato groups G1,G2
     - user xdb insecure-password hello groups G2
+
+haproxy_listens:
+  listen1:
+    # rank -1
+    - acl invalid_src src 0.0.0.0/7 224.0.0.0/3
+    - acl invalid_src src_port 0:1023
+    - acl local_dst hdr(host) -i localhost
+    - acl es req.fhdr(accept-language),language(es;fr;en) -m str es
+    - acl fr req.fhdr(accept-language),language(es;fr;en) -m str fr
+    - acl en req.fhdr(accept-language),language(es;fr;en) -m str en
+    # rank 0, in order
+    - mode http
+    - bind :80
+    - bind :443 ssl crt /etc/haproxy/site.pem
+    # rank 2
+    - tcp-request connection accept if { src -f /etc/haproxy/whitelist.lst }
+    - tcp-request connection reject if { src_conn_rate gt 10 }
+    - tcp-request connection track-sc0 src
+    # rank 3
+    - block if invalid_src || local_dst
+    # rank 4
+    - http-request deny if invalid_src || local_dst
+    # rank 5, in order
+    - reqdel ^X-Forwarded-For:.*
+    - reqdel ^Cookie:.*SERVER=
+    - reqpass ^Host:\ www.private\.local
+    # rank 6
+    - reqadd X-Proto:\ SSL if is-ssl
+    # rank 7
+    - redirect prefix https://mysite.com set-cookie SEEN=1 if !cookie_set
+    - redirect prefix https://mysite.com if login_page !secure
+    - redirect prefix http://mysite.com drop-query if login_page !uid_given
+    - redirect location http://mysite.com/ if !login_page secure
+    - redirect location / clear-cookie USERID= if logout
+    # rank 8
+    - use_backend backend1 if is-app1
+    - use_backend backend2 if is-app2
+    # rank 9
+    - use-server www if { req_ssl_sni -i www.example.com }
+    - use-server mail if { req_ssl_sni -i mail.example.com }
+    - use-server imap if { req_ssl_sni -i imap.example.com }
+    # rank 100
+    - server www 192.0.2.1:443 weight 0
+    - server mail 192.0.2.1:587 weight 0
+    - server imap 192.0.2.1:993 weight 0
+    - server default 192.0.2.2:443 check

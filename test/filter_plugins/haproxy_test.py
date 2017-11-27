@@ -36,6 +36,7 @@ def test_haproxy_single_sections(config, expected, section):
         ('haproxy_peers',),
         ('haproxy_resolvers',),
         ('haproxy_userlists',),
+        ('haproxy_listens',),
     ]
 )
 def test_haproxy_multiple_sections(config, expected, section):

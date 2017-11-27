@@ -100,8 +100,52 @@ haproxy_userlists:
       - scott insecure-password elgato groups G1,G2
       - xdb insecure-password hello groups G2
 
+
 haproxy_listens:
-
-haproxy_frontends:
-
-haproxy_backends:
+  listen1:
+    mode: http
+    bind:
+      - :80
+      - :443 ssl crt /etc/haproxy/site.pem
+    acl:
+      - invalid_src src 0.0.0.0/7 224.0.0.0/3
+      - invalid_src src_port 0:1023
+      - local_dst hdr(host) -i localhost
+      - es req.fhdr(accept-language),language(es;fr;en) -m str es
+      - fr req.fhdr(accept-language),language(es;fr;en) -m str fr
+      - en req.fhdr(accept-language),language(es;fr;en) -m str en
+    tcp-request:
+      connection:
+        - accept if { src -f /etc/haproxy/whitelist.lst }
+        - reject if { src_conn_rate gt 10 }
+        - track-sc0 src
+    block:
+      - if invalid_src || local_dst
+    http-request:
+      deny:
+        - if invalid_src || local_dst
+    reqdel:
+      - ^X-Forwarded-For:.*
+      - ^Cookie:.*SERVER=
+    reqpass:
+      - ^Host:\ www.private\.local
+    reqadd:
+      - X-Proto:\ SSL if is-ssl
+    redirect:
+      - prefix https://mysite.com set-cookie SEEN=1 if !cookie_set
+      - prefix https://mysite.com if login_page !secure
+      - prefix http://mysite.com drop-query if login_page !uid_given
+      - location http://mysite.com/ if !login_page secure
+      - location / clear-cookie USERID= if logout
+    use_backend:
+      - backend1 if is-app1
+      - backend2 if is-app2
+    use-server:
+      - www if { req_ssl_sni -i www.example.com }
+      - mail if { req_ssl_sni -i mail.example.com }
+      - imap if { req_ssl_sni -i imap.example.com }
+    server:
+      www: 192.0.2.1:443 weight 0
+      mail: 192.0.2.1:587 weight 0
+      imap: 192.0.2.1:993 weight 0
+      default: 192.0.2.2:443 check
