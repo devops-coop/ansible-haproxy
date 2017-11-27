@@ -69,6 +69,8 @@ def expand(options):
         elif isinstance(value, collections.Iterable):
             for item in value:
                 yield (key, item)
+        elif value is True:
+            yield (key, None)
         else:
             yield (key, value)
 
