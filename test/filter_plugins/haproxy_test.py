@@ -22,8 +22,22 @@ def expected():
     ('section',),
     [
         ('haproxy_defaults',),
-        ('haproxy_global',)
+        ('haproxy_global',),
     ]
 )
-def test_haproxy_defaults(config, expected, section):
+def test_haproxy_single_sections(config, expected, section):
     assert list(haproxy.to_haproxy(config[section])) == expected[section]
+
+
+@pytest.mark.parametrize(
+    ('section',),
+    [
+        ('haproxy_mailers',),
+        ('haproxy_peers',),
+        ('haproxy_resolvers',),
+        ('haproxy_userlists',),
+    ]
+)
+def test_haproxy_multiple_sections(config, expected, section):
+    for group, options in config[section].items():
+        assert list(haproxy.to_haproxy(options)) == expected[section][group]

@@ -38,12 +38,67 @@ haproxy_global:
 
 
 haproxy_mailers:
+  mailers1:
+    mailer:
+      smtp1: 192.0.2.1:587
+      smtp2: 192.0.2.2:587
+  mailers2:
+    mailer:
+      smtp1: 192.51.100.1:587
+      smtp2: 192.51.100.2:587
+
 
 haproxy_peers:
+  peers1:
+    peer:
+      haproxy1: 192.0.2.1:1024
+      haproxy2: 192.0.2.2:1024
+      haproxy3: 192.0.2.3:1024
+  peers2:
+    peer:
+      haproxy1: 192.51.100.1:1024
+      haproxy2: 192.51.100.2:1024
+      haproxy3: 192.51.100.3:1024
+
 
 haproxy_resolvers:
+  resolvers1:
+    nameserver:
+      dns1: 192.0.2.1:53
+      dns2: 192.0.2.2:53
+    resolve_retries: 3
+    timeout:
+      retry: 1s
+    hold:
+      valid: 10s
+  resolvers2:
+    nameserver:
+      dns1: 192.51.100.1:53
+      dns2: 192.51.100.2:53
+    resolve_retries: 3
+    timeout:
+      retry: 1s
+    hold:
+      valid: 10s
+
 
 haproxy_userlists:
+  userlist1:
+    group:
+      - G1 users tiger,scott
+      - G2 users xdb,scott
+    user:
+      - tiger password $6$k6y3o.eP$JlKBx9za9667qe4(...)xHSwRv6J.C0/D7cV91
+      - scott insecure-password elgato
+      - xdb insecure-password hello
+  userlist2:
+    group:
+      - G1
+      - G2
+    user:
+      - tiger password $6$k6y3o.eP$JlKBx(...)xHSwRv6J.C0/D7cV91 groups G1
+      - scott insecure-password elgato groups G1,G2
+      - xdb insecure-password hello groups G2
 
 haproxy_listens:
 

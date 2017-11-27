@@ -28,3 +28,49 @@ haproxy_global:
   - crt-base /etc/ssl/private
   - ssl-default-bind-ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS
   - ssl-default-bind-options no-sslv3
+
+haproxy_mailers:
+  mailers1:
+    - mailer smtp1 192.0.2.1:587
+    - mailer smtp2 192.0.2.2:587
+  mailers2:
+    - mailer smtp1 192.51.100.1:587
+    - mailer smtp2 192.51.100.2:587
+
+haproxy_peers:
+  peers1:
+    - peer haproxy1 192.0.2.1:1024
+    - peer haproxy2 192.0.2.2:1024
+    - peer haproxy3 192.0.2.3:1024
+  peers2:
+    - peer haproxy1 192.51.100.1:1024
+    - peer haproxy2 192.51.100.2:1024
+    - peer haproxy3 192.51.100.3:1024
+
+haproxy_resolvers:
+  resolvers1:
+    - nameserver dns1 192.0.2.1:53
+    - nameserver dns2 192.0.2.2:53
+    - resolve_retries 3
+    - timeout retry 1s
+    - hold valid 10s
+  resolvers2:
+    - nameserver dns1 192.51.100.1:53
+    - nameserver dns2 192.51.100.2:53
+    - resolve_retries 3
+    - timeout retry 1s
+    - hold valid 10s
+
+haproxy_userlists:
+  userlist1:
+    - group G1 users tiger,scott
+    - group G2 users xdb,scott
+    - user tiger password $6$k6y3o.eP$JlKBx9za9667qe4(...)xHSwRv6J.C0/D7cV91
+    - user scott insecure-password elgato
+    - user xdb insecure-password hello
+  userlist2:
+    - group G1
+    - group G2
+    - user tiger password $6$k6y3o.eP$JlKBx(...)xHSwRv6J.C0/D7cV91 groups G1
+    - user scott insecure-password elgato groups G1,G2
+    - user xdb insecure-password hello groups G2
