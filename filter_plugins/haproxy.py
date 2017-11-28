@@ -10,9 +10,11 @@ else:
     string_types = str
 
 
-# Ranks taken from Puppetlabs HAProxy module:
+# Certain options need to precede others in the configuration file. Options with
+# larger weights sink to the bottom.
+# Weights taken from Puppetlabs HAProxy module:
 # <https://github.com/puppetlabs/puppetlabs-haproxy/blob/093b9ec1c56551a9e9679dbb3eeef87da851737e/templates/fragments/_options.erb>
-RANKS = {
+OPTION_WEIGHTS = {
     'acl': -1,
     'tcp-request': 2,
     'block': 3,
@@ -36,20 +38,22 @@ RANKS = {
 }
 
 
-def haproxy_sort(options):
+def sort_by_weight(mapping, weights=None):
     """
-    Sort HAProxy options according to their relative ranks.
+    Sort mapping keys first by weight, then alphabetically.
     """
-    return collections.OrderedDict(
-        sorted(options.items(), key=lambda pair: RANKS.get(pair[0], 0)),
-    )
+    if weights:
+        key = lambda kv: (weights.get(kv[0], 0), kv[0])
+    else:
+        key = None
+    return collections.OrderedDict(sorted(mapping.items(), key=key))
 
 
 def expand(options):
     """
     Expand a nested configuration dictionary.
     """
-    for key, value in options.items():
+    for key, value in sort_by_weight(options, weights=OPTION_WEIGHTS).items():
         if not isinstance(value, collections.Container) or isinstance(value, string_types):
             yield (key, value)
             continue
@@ -58,7 +62,7 @@ def expand(options):
                 yield (key, item)
             continue
         elif isinstance(value, collections.Mapping):
-            yield (key, list(expand(value)))
+            yield (key, list(expand((value))))
             continue
         yield (key, value)
 
@@ -67,7 +71,7 @@ def to_haproxy(options):
     """
     Yield HAProxy configuration lines from a nested configuration dictionary.
     """
-    options = expand(haproxy_sort(options))
+    options = expand(options)
     for key, value in options:
         if value is True:
             yield str(key)

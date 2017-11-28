@@ -1,12 +1,5 @@
 ---
 haproxy_defaults:
-  - log global
-  - mode http
-  - option httplog
-  - option dontlognull
-  - timeout connect 5000
-  - timeout client 50000
-  - timeout server 50000
   - errorfile 400 /etc/haproxy/errors/400.http
   - errorfile 403 /etc/haproxy/errors/403.http
   - errorfile 408 /etc/haproxy/errors/408.http
@@ -14,20 +7,28 @@ haproxy_defaults:
   - errorfile 502 /etc/haproxy/errors/502.http
   - errorfile 503 /etc/haproxy/errors/503.http
   - errorfile 504 /etc/haproxy/errors/504.http
+  - log global
+  - mode http
+  # Preserve order within YAML sequences.
+  - option httplog
+  - option dontlognull
+  - timeout client 50000
+  - timeout connect 5000
+  - timeout server 50000
 
 haproxy_global:
+  - ca-base /etc/ssl/certs
+  - chroot /var/lib/haproxy
+  - crt-base /etc/ssl/private
+  - daemon
+  - group haproxy
   - log /dev/log local0
   - log /dev/log local1 notice
-  - chroot /var/lib/haproxy
+  - ssl-default-bind-ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS
+  - ssl-default-bind-options no-sslv3
   - stats socket /run/haproxy/admin.sock mode 660 level admin
   - stats timeout 30s
   - user haproxy
-  - group haproxy
-  - daemon
-  - ca-base /etc/ssl/certs
-  - crt-base /etc/ssl/private
-  - ssl-default-bind-ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS
-  - ssl-default-bind-options no-sslv3
 
 haproxy_mailers:
   mailers1:
@@ -49,17 +50,17 @@ haproxy_peers:
 
 haproxy_resolvers:
   resolvers1:
+    - hold valid 10s
     - nameserver dns1 192.0.2.1:53
     - nameserver dns2 192.0.2.2:53
     - resolve_retries 3
     - timeout retry 1s
-    - hold valid 10s
   resolvers2:
+    - hold valid 10s
     - nameserver dns1 192.51.100.1:53
     - nameserver dns2 192.51.100.2:53
     - resolve_retries 3
     - timeout retry 1s
-    - hold valid 10s
 
 haproxy_userlists:
   userlist1:
@@ -84,10 +85,10 @@ haproxy_listens:
     - acl es req.fhdr(accept-language),language(es;fr;en) -m str es
     - acl fr req.fhdr(accept-language),language(es;fr;en) -m str fr
     - acl en req.fhdr(accept-language),language(es;fr;en) -m str en
-    # rank 0, in order
-    - mode http
+    # rank 0, in alphabetical order
     - bind :80
     - bind :443 ssl crt /etc/haproxy/site.pem
+    - mode http
     # rank 2
     - tcp-request connection accept if { src -f /etc/haproxy/whitelist.lst }
     - tcp-request connection reject if { src_conn_rate gt 10 }
@@ -116,10 +117,10 @@ haproxy_listens:
     - use-server mail if { req_ssl_sni -i mail.example.com }
     - use-server imap if { req_ssl_sni -i imap.example.com }
     # rank 100
-    - server www 192.0.2.1:443 weight 0
-    - server mail 192.0.2.1:587 weight 0
-    - server imap 192.0.2.1:993 weight 0
     - server default 192.0.2.2:443 check
+    - server imap 192.0.2.1:993 weight 0
+    - server mail 192.0.2.1:587 weight 0
+    - server www 192.0.2.1:443 weight 0
   listen2:
-    - no log
     - disabled
+    - no log
