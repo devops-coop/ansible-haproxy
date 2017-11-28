@@ -6,7 +6,7 @@
 
 
 {% else %}
-{% for name, options in instances.items() %}
+{% for name, options in (instances|dictsort(case_sensitive=True)).items() %}
 {{ section }} {{ name }}
 {{ options|to_haproxy|join('\n')|indent(indentfirst=True) }}
 
