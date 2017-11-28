@@ -14,37 +14,29 @@ _haproxy_ssl_ciphers: 'ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305
 
 haproxy_global:
   log:
-    - address: /dev/log
-      facility: local0
-    - address: /dev/log
-      facility: local1
-      level: notice
+    /dev/log:
+    - local0
+    - local1 notice
   chroot: /var/lib/haproxy
   user: haproxy
   group: haproxy
   daemon: true
-  ssl_default_bind_options: '{{ _haproxy_ssl_options }}'
-  ssl_default_bind_ciphers: '{{ _haproxy_ssl_ciphers }}'
-  ssl_default_server_options: '{{ _haproxy_ssl_options }}'
-  ssl_default_server_ciphers: '{{ _haproxy_ssl_ciphers }}'
-  tune:
-    ssl:
-      default-dh-param: 2048
+  ssl-default-bind-options: '{{ _haproxy_ssl_options }}'
+  ssl-default-bind-ciphers: '{{ _haproxy_ssl_ciphers }}'
+  ssl-default-server-options: '{{ _haproxy_ssl_options }}'
+  ssl-default-server-ciphers: '{{ _haproxy_ssl_ciphers }}'
+  tune.ssl.default-dh-param: 2048
 
 haproxy_defaults:
   mode: http
   log:
-    - address: /dev/log
-      facility: local1
-      level: notice
+    /dev/log:
+      - local1 notice
   timeout:
-      - param: 'connect'
-        value: '5000ms'
-      - param: 'client'
-        value: '50000ms'
-      - param: 'server'
-        value: '50000ms'
-  options:
+    connect: 5000ms
+    client: 50000ms
+    server: 50000ms
+  option:
     - httpclose
     - forwardfor except 127.0.0.0/8
     - redispatch
@@ -52,23 +44,10 @@ haproxy_defaults:
     - httplog
     - dontlognull
   errorfile:
-      - code: 400
-        file: /etc/haproxy/errors/400.http
-      - code: 403
-        file: /etc/haproxy/errors/403.http
-      - code: 408
-        file: /etc/haproxy/errors/408.http
-      - code: 500
-        file: /etc/haproxy/errors/500.http
-      - code: 502
-        file: /etc/haproxy/errors/502.http
-      - code: 503
-        file: /etc/haproxy/errors/503.http
-      - code: 504
-        file: /etc/haproxy/errors/504.http
-
-haproxy_resolvers: []
-haproxy_backends: []
-haproxy_frontends: []
-haproxy_listen: []
-haproxy_userlists: []
+    400: /etc/haproxy/errors/400.http
+    403: /etc/haproxy/errors/403.http
+    408: /etc/haproxy/errors/408.http
+    500: /etc/haproxy/errors/500.http
+    502: /etc/haproxy/errors/502.http
+    503: /etc/haproxy/errors/503.http
+    504: /etc/haproxy/errors/504.http
