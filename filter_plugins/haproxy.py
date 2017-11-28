@@ -76,7 +76,7 @@ def to_haproxy(options):
         if value is True:
             yield str(key)
         elif value is False:
-            yield 'no {}'.format(key)
+            continue
         elif isinstance(value, collections.Sequence) and not isinstance(value, string_types):
             for sub_key, sub_value in value:
                 yield '{} {} {}'.format(key, sub_key, sub_value)

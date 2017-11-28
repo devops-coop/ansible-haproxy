@@ -122,5 +122,4 @@ haproxy_listens:
     - server mail 192.0.2.1:587 weight 0
     - server www 192.0.2.1:443 weight 0
   listen2:
-    - disabled
     - no log
