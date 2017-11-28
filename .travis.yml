@@ -3,5 +3,5 @@ language: python
   - '2.7'
   - '3.5'
   - '3.6'
-install: pip install tox-travis
+install: pip install --user tox-travis
 script: tox
