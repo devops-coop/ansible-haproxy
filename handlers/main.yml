@@ -6,3 +6,4 @@
   service:
     name: haproxy
     state: restarted
+  when: not haproxy_disable_restart
