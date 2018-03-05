@@ -129,6 +129,9 @@ empty: true
 #    rspirep:
 #      - "^Location:\ 127.0.0.1:8080 Location:\ www.mydomain.com"
 #    force_persist:
+#      - if hdr(Host) serverX
+#    use_server::
+#      - server if hdr(Host) serverX
 #
 #haproxy_backends:
 #  - name:
