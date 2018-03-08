@@ -21,6 +21,7 @@ empty: true
 #      level:
 #      minlevel:
 #      format:
+#  log_send_hostname:
 #  ssl_default_bind_options:
 #  ssl_default_bind_ciphers:
 #  tune:
