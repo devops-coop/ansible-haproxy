@@ -83,8 +83,9 @@ empty: true
 #      - 192.168.1.2:81
 #    ssl:
 #      cert: /etc/ssl/private/cert.pem
-#      ca:   /etc/ssl/private/ca.pem
 #      ciphers: 'RC4-SHA:AES128-SHA:AES:!ADH:!aNULL:!DH:!EDH:!eNULL'
+#    params:
+#       - ca-file /etc/ssl/private/certCA.pem
 #    maxconn:
 #    monitor:
 #      uri:
