@@ -64,14 +64,29 @@
     name: "{{ haproxy_package_name }}"
   when: ansible_distribution == 'Ubuntu'
 
+- name: Installs policycoreutils-python
+  package:
+    name: policycoreutils-python
+    state: present
+  when: (ansible_selinux.status == "enabled") and (ansible_os_family == "RedHat")
+
+- name: Allow HAProxy to manage ports (SELinux)
+  selinux_permissive:
+    name: haproxy_t
+    permissive: true
+  when: ansible_selinux.status == "enabled" and (ansible_os_family == "RedHat")
+
+- meta: flush_handlers
+
 - name: Install supplementary packages
   package:
     name: "{{ item }}"
   with_items: "{{ haproxy_extra_packages }}"
 
-- name: 'Enable it'
+- name: 'Ensure service started'
   service:
     name: haproxy
+    state: started
     enabled: yes
 
 - name: 'Ensure chroot directory exists'
