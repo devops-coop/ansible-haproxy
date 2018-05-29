@@ -6,20 +6,20 @@
     - "{{ ansible_os_family }}.yml"
     - default.yml
 
-- name: 'Check epel repo'
-  shell: yum repolist | grep -qi EPEL
-  register: epel_repo_check
-  check_mode: false
-  when: ansible_pkg_mgr == "yum"
+# - name: 'Check epel repo'
+#   shell: yum repolist | grep -qi EPEL
+#   register: epel_repo_check
+#   check_mode: false
+#   when: ansible_pkg_mgr == "yum"
 
-- name: 'Add epel repo'
-  template:
-    src: "epel.repo"
-    dest: "/etc/yum.repos.d/epel.repo"
-    owner: "root"
-    group: "root"
-    mode: "0644"
-  when: ansible_pkg_mgr == "yum" and epel_repo_check is defined and epel_repo_check.rc != 0
+# - name: 'Add epel repo'
+#   template:
+#     src: "epel.repo"
+#     dest: "/etc/yum.repos.d/epel.repo"
+#     owner: "root"
+#     group: "root"
+#     mode: "0644"
+#   when: ansible_pkg_mgr == "yum" and epel_repo_check is defined and epel_repo_check.rc != 0
 
 - name: 'Add haproxy apt repo (squeeze)'
   apt_repository:
