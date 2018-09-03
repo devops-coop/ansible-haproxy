@@ -1,0 +1,4 @@
+---
+haproxy_config_dir: /opt/local/etc/haproxy
+haproxy_config_file: /opt/local/etc/haproxy.cfg
+_haproxy_log_address: 127.0.0.1

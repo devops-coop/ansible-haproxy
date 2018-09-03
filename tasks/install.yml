@@ -64,6 +64,13 @@
     name: "{{ haproxy_package_name }}"
   when: ansible_distribution == 'Ubuntu'
 
+- name: Install HAProxy (pkgin)
+  pkgin:
+    name: "{{ haproxy_package_name }}"
+    state: present
+    update_cache: yes
+  when: ansible_os_family == 'Solaris'
+
 - name: Install supplementary packages
   package:
     name: "{{ item }}"
@@ -73,6 +80,7 @@
   service:
     name: haproxy
     enabled: yes
+  when: ansible_os_family != 'Solaris'
 
 - name: 'Ensure chroot directory exists'
   file:
