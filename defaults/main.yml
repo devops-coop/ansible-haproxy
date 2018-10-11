@@ -72,3 +72,6 @@ haproxy_backends: []
 haproxy_frontends: []
 haproxy_listen: []
 haproxy_userlists: []
+
+haproxy_extra_global_options: ""
+haproxy_extra_defaults_options: ""
