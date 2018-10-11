@@ -44,6 +44,8 @@ empty: true
 #  timeout:
 #    - param:
 #      value:
+#  balance:
+#  cookie:
 #  maxconn:
 #  stats:
 #    enabled:
@@ -60,6 +62,18 @@ empty: true
 #    disable_on_404:
 #    expect:
 #    send_state:
+#
+#haproxy_resolvers:
+#  - name:
+#    nameservers:
+#      - name:
+#        ip:
+#        port:
+#    hold:
+#      - status:
+#        period:
+#    resolve_retries:
+#    timeout_retry:
 #
 #haproxy_frontends:
 #  - name:
@@ -114,12 +128,14 @@ empty: true
 #      - "^Location:\ 127.0.0.1:8080 Location:\ www.mydomain.com"
 #    rspirep:
 #      - "^Location:\ 127.0.0.1:8080 Location:\ www.mydomain.com"
+#    force_persist:
 #
 #haproxy_backends:
 #  - name:
 #    disabled:
 #    description:
 #    balance:
+#    cookie:
 #    log:
 #    retries:
 #    contimeout:
@@ -147,6 +163,21 @@ empty: true
 #    errorfile:
 #      - code:
 #        file:
+#    reqadd:
+#      - "X-RequestHeader1:\\ some-value"
+#      - "X-RequestHeader2:\\ some-value"
+#    rspadd:
+#      - "X-ResponseHeader1:\\ some-value"
+#      - "X-ResponseHeader2:\\ some-value"
+#    reqrep:
+#      - "^Host:\ www.(.*)$ Host:\ \1 if host_www"
+#    reqirep:
+#      - "^Host:\ www.(.*)$ Host:\ \1 if host_www"
+#    rsprep:
+#      - "^Location:\ 127.0.0.1:8080 Location:\ www.mydomain.com"
+#    rspirep:
+#      - "^Location:\ 127.0.0.1:8080 Location:\ www.mydomain.com"
+#    force_persist:
 #
 #haproxy_listen:
 #  - name:
@@ -156,7 +187,9 @@ empty: true
 #      ciphers: 'RC4-SHA:AES128-SHA:AES:!ADH:!aNULL:!DH:!EDH:!eNULL'
 #    disabled:
 #    description:
+#    maxconn:
 #    balance:
+#    cookie:
 #    log:
 #    retries:
 #    http_send_name_header:
@@ -177,6 +210,20 @@ empty: true
 #    timeout:
 #      - param:
 #        value:
+#    reqadd:
+#      - "X-RequestHeader1:\\ some-value"
+#      - "X-RequestHeader2:\\ some-value"
+#    rspadd:
+#      - "X-ResponseHeader1:\\ some-value"
+#      - "X-ResponseHeader2:\\ some-value"
+#    reqrep:
+#      - "^Host:\ www.(.*)$ Host:\ \1 if host_www"
+#    reqirep:
+#      - "^Host:\ www.(.*)$ Host:\ \1 if host_www"
+#    rsprep:
+#      - "^Location:\ 127.0.0.1:8080 Location:\ www.mydomain.com"
+#    rspirep:
+#      - "^Location:\ 127.0.0.1:8080 Location:\ www.mydomain.com"
 #    appsession: 'JSESSIONID len 52 timeout 3h'
 #    stats:
 #      enabled:
@@ -185,3 +232,4 @@ empty: true
 #      realm:
 #      auth:
 #      refresh:
+#    force_persist:

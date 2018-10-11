@@ -1,0 +1,13 @@
+{%- macro http_response(responses = []) -%}
+    {%- for response in responses -%}
+        http-response {{ response.action }}{% if response.param is defined %} {{ response.param }}{% endif %}{% if response.condition is defined %} {{ response.condition }}{% endif %}
+
+    {% endfor -%}
+{%- endmacro -%}
+
+{%- macro http_request(requests = []) -%}
+    {%- for request in requests -%}
+        http-request {{ request.action }}{% if request.param is defined %} {{ request.param }}{% endif %}{% if request.condition is defined %} {{ request.condition }}{% endif %}
+
+    {% endfor -%}
+{%- endmacro -%}

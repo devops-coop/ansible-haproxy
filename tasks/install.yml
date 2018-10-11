@@ -1,42 +1,15 @@
 ---
-
-## VAR SETUP
-
-- name: 'Set CentOS directory prefix'
-  set_fact:
-    etc_prefix: "/etc"
-  when: ansible_os_family == "RedHat"
-
-- name: 'Set CentOS haproxy config location'
-  set_fact:
-    config_location: "/etc/haproxy/haproxy.cfg"
-  when: ansible_os_family == "RedHat"
-
-- name: 'Set SmartOS etc prefix'
-  set_fact:
-    etc_prefix: "/opt/local/etc"
-  when: ansible_os_family == "Solaris"
-
-- name: 'Set SmartOS haproxy config location'
-  set_fact:
-    config_location: "/opt/local/etc/haproxy.cfg"
-  when: ansible_os_family == "Solaris"
-
-- name: 'Set Debian/Ubuntu directory prefix'
-  set_fact:
-    etc_prefix: "/etc"
-  when: ansible_os_family == "Debian"
-
-- name: 'Set Debian/Ubuntu haproxy config location'
-  set_fact:
-    config_location: "/etc/haproxy/haproxy.cfg"
-  when: ansible_os_family == "Debian"
-
-## PACKAGE INSTALL
+- name: Include distribution variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+    - default.yml
 
 - name: 'Check epel repo'
   shell: yum repolist | grep -qi EPEL
   register: epel_repo_check
+  check_mode: false
   when: ansible_pkg_mgr == "yum"
 
 - name: 'Add epel repo'
@@ -48,17 +21,7 @@
     mode: "0644"
   when: ansible_pkg_mgr == "yum" and epel_repo_check is defined and epel_repo_check.rc != 0
 
-- name: 'Installs haproxy as well as socat for socket api'
-  yum:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - haproxy
-    - socat
-  when: ansible_os_family == 'RedHat'
-
 - name: 'Add haproxy apt repo (squeeze)'
-  sudo: yes
   apt_repository:
     repo: deb http://http.debian.net/debian {{ ansible_distribution_release }}-backports-sloppy main
     state: present
@@ -66,7 +29,6 @@
   when: ansible_distribution_release == 'squeeze'
 
 - name: Add haproxy apt repo (wheezy/jessie)
-  sudo: yes
   apt_repository:
     repo: deb http://http.debian.net/debian {{ ansible_distribution_release }}-backports main
     state: present
@@ -74,30 +36,38 @@
   when: ansible_distribution_release == 'wheezy' or ansible_distribution_release == 'jessie'
 
 - name: 'Add haproxy apt repo (Ubuntu)'
-  sudo: yes
   apt_repository:
     repo: "ppa:vbernat/haproxy-1.5"
     state: present
     update_cache: yes
   when: ansible_distribution == "Ubuntu"
 
-- name: 'Installs haproxy as well as socat for socket api'
-  apt:
-    pkg: "{{ item }}"
-    state: latest
-  with_items:
-    - haproxy
-    - socat
-  when: ansible_os_family == 'Debian'
+- name: Install HAProxy (yum)
+  yum:
+    name: "{{ haproxy_package_name }}"
+  when: ansible_pkg_mgr == "yum"
 
-- name: 'Installs haproxy as well as socat for socket api'
-  pkgin:
+- name: Install HAProxy (apt squeeze)
+  apt:
+    name: "{{ haproxy_package_name }}"
+    default_release: "{{ansible_distribution_release}}-backports-sloppy"
+  when: ansible_distribution_release == 'squeeze'
+
+- name: Install HAProxy (apt wheezy/jessie)
+  apt:
+    name: "{{ haproxy_package_name }}"
+    default_release: "{{ansible_distribution_release}}-backports"
+  when: ansible_distribution_release == 'wheezy' or ansible_distribution_release == 'jessie'
+
+- name: Install HAProxy (Ubuntu)
+  package:
+    name: "{{ haproxy_package_name }}"
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install supplementary packages
+  package:
     name: "{{ item }}"
-    state: present
-  with_items:
-    - haproxy
-    - socat
-  when: ansible_os_family == 'Solaris'
+  with_items: "{{ haproxy_extra_packages }}"
 
 - name: 'Enable it'
   service:

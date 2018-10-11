@@ -1,15 +1,43 @@
 ---
 
+## ASSEMBLE CONFIG - RESOLVERS
+
+- name: 'Create directory for the resolvers'
+  file:
+    path: "{{ haproxy_config_dir }}/resolvers.d"
+    state: directory
+
+- name: "List files for the resolvers"
+  find:
+    paths: "{{ haproxy_config_dir }}/resolvers.d"
+    patterns: "*.cfg"
+  register: directory_contents
+  changed_when: false
+
+- name: "Remove unmanaged files for the resolvers"
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  when: (item.path | basename) not in (haproxy_resolvers | json_query('[*].name') | map('regex_replace',  '(.*)', '\\1.cfg') | list)
+  with_items: "{{ directory_contents.files }}"
+
+- name: 'Build up the resolvers'
+  template:
+    src: "resolvers.cfg"
+    dest: "{{ haproxy_config_dir }}/resolvers.d/{{ item.name }}.cfg"
+  with_items: "{{ haproxy_resolvers }}"
+  when: haproxy_resolvers is defined
+
 ## ASSEMBLE CONFIG - FRONTEND
 
 - name: 'Create directory for the frontend'
   file:
-    path: "{{ etc_prefix }}/haproxy/frontends.d"
+    path: "{{ haproxy_config_dir }}/frontends.d"
     state: directory
 
 - name: "List files for the frontends"
   find:
-    paths: "{{ etc_prefix }}/haproxy/frontends.d"
+    paths: "{{ haproxy_config_dir }}/frontends.d"
     patterns: "*.cfg"
   register: directory_contents
   changed_when: false
@@ -24,7 +52,7 @@
 - name: 'Build up the frontends'
   template:
     src: "frontend.cfg"
-    dest: "{{ etc_prefix }}/haproxy/frontends.d/{{ item.name }}.cfg"
+    dest: "{{ haproxy_config_dir }}/frontends.d/{{ item.name }}.cfg"
   with_items: "{{ haproxy_frontends }}"
   when: haproxy_frontends is defined
 
@@ -32,12 +60,12 @@
 
 - name: 'Create directory for the backends'
   file:
-    path: "{{ etc_prefix }}/haproxy/backends.d"
+    path: "{{ haproxy_config_dir }}/backends.d"
     state: directory
 
 - name: "List files for the backends"
   find:
-    paths: "{{ etc_prefix }}/haproxy/backends.d"
+    paths: "{{ haproxy_config_dir }}/backends.d"
     patterns: "*.cfg"
   register: directory_contents
   changed_when: false
@@ -52,7 +80,7 @@
 - name: 'Build up the backends'
   template:
     src: "backend.cfg"
-    dest: "{{ etc_prefix }}/haproxy/backends.d/{{ item.name }}.cfg"
+    dest: "{{ haproxy_config_dir }}/backends.d/{{ item.name }}.cfg"
   with_items: "{{ haproxy_backends }}"
   when: haproxy_backends is defined
 
@@ -60,12 +88,12 @@
 
 - name: 'Create directory for the listen sections'
   file:
-    path: "{{ etc_prefix }}/haproxy/listen.d"
+    path: "{{ haproxy_config_dir }}/listen.d"
     state: directory
 
 - name: "List files the listen sections"
   find:
-    paths: "{{ etc_prefix }}/haproxy/listen.d"
+    paths: "{{ haproxy_config_dir }}/listen.d"
     patterns: "*.cfg"
   register: directory_contents
   changed_when: false
@@ -80,18 +108,18 @@
 - name: 'Build up the listen sections'
   template:
     src: "listen.cfg"
-    dest: "{{ etc_prefix }}/haproxy/listen.d/{{ item.name }}.cfg"
+    dest: "{{ haproxy_config_dir }}/listen.d/{{ item.name }}.cfg"
   with_items: "{{ haproxy_listen }}"
   when: haproxy_listen is defined
 
 ## ASSEMBLE CONFIG - USERLIST
 
 - name: 'Create directory for the userlists'
-  file: path={{ etc_prefix }}/haproxy/userlists.d state=directory
+  file: path={{ haproxy_config_dir }}/userlists.d state=directory
 
 - name: "List files for the userlists"
   find:
-    paths: "{{ etc_prefix }}/haproxy/userlists.d"
+    paths: "{{ haproxy_config_dir }}/userlists.d"
     patterns: "*.cfg"
   register: directory_contents
   changed_when: false
@@ -106,53 +134,66 @@
 - name: 'Build up the userlist sections'
   template:
     src: userlist.cfg
-    dest: "{{ etc_prefix }}/haproxy/userlists.d/{{ item.name }}.cfg"
+    dest: "{{ haproxy_config_dir }}/userlists.d/{{ item.name }}.cfg"
   with_items: "{{ haproxy_userlists }}"
   when: haproxy_userlists is defined
 
 ## ASSEMBLE CONFIG - GLOBAL & DEFAULT
 
-- name: 'Create  the compiled folder'
-  file: path={{ etc_prefix }}/haproxy/compiled state=directory
+- name: 'Delete the compiled folder'
+  file:
+    path: "{{ haproxy_config_dir }}/compiled"
+    state: absent
+
+- name: 'Create the compiled folder'
+  file:
+    path: "{{ haproxy_config_dir }}/compiled"
+    state: directory
 
 - name: 'Build up the global config'
   template:
     src: "global.cfg"
-    dest: "{{ etc_prefix }}/haproxy/compiled/01-global.cfg"
+    dest: "{{ haproxy_config_dir }}/compiled/01-global.cfg"
   when: haproxy_global is defined
   tags: 'test'
 
 - name: 'Build up the default config'
   template:
     src: "defaults.cfg"
-    dest: "{{ etc_prefix }}/haproxy/compiled/02-defaults.cfg"
+    dest: "{{ haproxy_config_dir }}/compiled/02-defaults.cfg"
   when: haproxy_defaults is defined
 
 ## ASSEMBLE FINAL CONFIG
 
+- name: 'Assemble the resolvers sections configuration file'
+  assemble:
+    src: "{{ haproxy_config_dir }}/resolvers.d"
+    dest: "{{ haproxy_config_dir }}/compiled/03-resolvers.cfg"
+
 - name: 'Assemble the backends configuration file'
   assemble:
-    src: "{{ etc_prefix }}/haproxy/backends.d"
-    dest: "{{ etc_prefix }}/haproxy/compiled/03-backends.cfg"
+    src: "{{ haproxy_config_dir }}/backends.d"
+    dest: "{{ haproxy_config_dir }}/compiled/04-backends.cfg"
 
 - name: 'Assemble the frontends configuration file'
   assemble:
-    src: "{{ etc_prefix }}/haproxy/frontends.d"
-    dest: "{{ etc_prefix }}/haproxy/compiled/04-frontends.cfg"
+    src: "{{ haproxy_config_dir }}/frontends.d"
+    dest: "{{ haproxy_config_dir }}/compiled/05-frontends.cfg"
 
 - name: 'Assemble the listen sections configuration file'
   assemble:
-    src: "{{ etc_prefix }}/haproxy/listen.d"
-    dest: "{{ etc_prefix }}/haproxy/compiled/05-listen.cfg"
+    src: "{{ haproxy_config_dir }}/listen.d"
+    dest: "{{ haproxy_config_dir }}/compiled/06-listen.cfg"
 
 - name: 'Assemble the userlists sections configuration file'
   assemble:
-    src: "{{ etc_prefix }}/haproxy/userlists.d"
-    dest: "{{ etc_prefix }}/haproxy/compiled/06-userlists.cfg"
+    src: "{{ haproxy_config_dir }}/userlists.d"
+    dest: "{{ haproxy_config_dir }}/compiled/07-userlists.cfg"
 
 - name: 'Assemble the final configuration file'
   assemble:
-    src: "{{ etc_prefix }}/haproxy/compiled"
-    dest: "{{ config_location }}"
+    src: "{{ haproxy_config_dir }}/compiled"
+    dest: "{{ haproxy_config_file }}"
     backup: yes
+    validate: "haproxy -c -f %s"
   notify: restart haproxy

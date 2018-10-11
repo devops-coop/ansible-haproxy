@@ -10,12 +10,12 @@ galaxy_info:
     versions:
     - precise
     - trusty
-  - name: SmartOS
   - name: CentOS
   - name: Debian
     versions:
     - wheezy
     - jessie
+  - name: Alpine
   categories:
   - networking
   - system

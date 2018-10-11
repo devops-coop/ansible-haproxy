@@ -1,0 +1,7 @@
+_haproxy_etc_prefix: /etc
+_haproxy_config_dir: "{{ _haproxy_etc_prefix }}/haproxy"
+_haproxy_config_file: "{{ _haproxy_config_dir }}/haproxy.cfg"
+
+_haproxy_package_name: haproxy
+_haproxy_extra_packages:
+  - socat
