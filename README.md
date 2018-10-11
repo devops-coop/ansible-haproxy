@@ -48,6 +48,12 @@ Example
 - hosts: loadbalancers
   roles:
      - role: haproxy
+       haproxy_global:
+       - address: "/dev/log"
+         facility: "local0"
+         level: "info"
+       haproxy_extra_global_options: |
+         hard-stop-after 30s
        haproxy_frontends:
        - name: 'fe-mysupersite'
          ip: '123.123.123.120'
