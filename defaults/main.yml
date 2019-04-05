@@ -14,8 +14,8 @@ haproxy_global:
   group: haproxy
   daemon: true
 
-haproxy_repo_version: '1.6'
-haproxy_package_version: '1.6'
+haproxy_repo_version: '1.8'
+haproxy_package_version: '1.8'
 
 haproxy_frontends: []
 haproxy_backends: []
