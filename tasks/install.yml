@@ -53,7 +53,7 @@
 - name: 'Add haproxy apt repo'
   become: yes
   become_user: root
-  apt_repository: repo="ppa:vbernat/haproxy-{{ haproxy_repo_version }}" codename="focal" state=present update_cache=yes
+  apt_repository: repo="ppa:vbernat/haproxy-{{ haproxy_repo_version }}" codename="{{ haproxy_repo_codename }}" state=present update_cache=yes
   when: ansible_distribution == "Ubuntu"
 
 - name: 'Installs haproxy as well as socat for socket api'
