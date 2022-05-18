@@ -14,9 +14,9 @@ haproxy_global:
   group: haproxy
   daemon: true
 
-haproxy_repo_codename: bionic
-haproxy_repo_version: '1.8'
-haproxy_package_version: '1.8'
+haproxy_repo_codename: focal
+haproxy_repo_version: 2.5
+haproxy_package_version: 2.5
 
 haproxy_frontends: []
 haproxy_backends: []
