@@ -15,7 +15,7 @@ haproxy_global:
   daemon: true
 
 haproxy_repo_codename: focal
-haproxy_repo_version: 2.5
+haproxy_repo_version: "{{ haproxy_package_version }}"
 haproxy_package_version: 2.5
 
 haproxy_frontends: []
