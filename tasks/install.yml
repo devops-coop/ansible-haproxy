@@ -21,60 +21,67 @@
 #     mode: "0644"
 #   when: ansible_pkg_mgr == "yum" and epel_repo_check is defined and epel_repo_check.rc != 0
 
-- name: 'Add haproxy apt repo (squeeze)'
-  apt_repository:
-    repo: deb http://http.debian.net/debian {{ ansible_distribution_release }}-backports-sloppy main
-    state: present
-    update_cache: yes
-  when: ansible_distribution_release == 'squeeze'
+- block:
+    # Debian/Ubuntu/Apt Packages
+    - name: 'Add haproxy apt repo (squeeze)'
+      apt_repository:
+        repo: deb http://http.debian.net/debian {{ ansible_distribution_release }}-backports-sloppy main
+        state: present
+        update_cache: yes
+      when: ansible_distribution_release == 'squeeze'
 
-- name: Add haproxy apt repo (wheezy/jessie)
-  apt_repository:
-    repo: deb http://http.debian.net/debian {{ ansible_distribution_release }}-backports main
-    state: present
-    update_cache: yes
-  when: ansible_distribution_release == 'wheezy' or ansible_distribution_release == 'jessie'
+    - name: Add haproxy apt repo (wheezy/jessie)
+      apt_repository:
+        repo: deb http://http.debian.net/debian {{ ansible_distribution_release }}-backports main
+        state: present
+        update_cache: yes
+      when: ansible_distribution_release == 'wheezy' or ansible_distribution_release == 'jessie'
 
-- name: 'Add haproxy apt repo (Ubuntu)'
-  apt_repository:
-    repo: "ppa:vbernat/haproxy-1.5"
-    state: present
-    update_cache: yes
-  when: ansible_distribution == "Ubuntu"
+    - name: 'Add haproxy apt repo (Ubuntu)'
+      apt_repository:
+        repo: "ppa:vbernat/haproxy-1.5"
+        state: present
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
 
-- name: Install HAProxy (yum)
-  yum:
-    name: "{{ haproxy_package_name }}"
-  when: ansible_pkg_mgr == "yum"
+    - name: Install HAProxy (apt squeeze)
+      apt:
+        name: "{{ haproxy_package_name }}"
+        default_release: "{{ansible_distribution_release}}-backports-sloppy"
+      when: ansible_distribution_release == 'squeeze'
 
-- name: Install HAProxy (apt squeeze)
-  apt:
-    name: "{{ haproxy_package_name }}"
-    default_release: "{{ansible_distribution_release}}-backports-sloppy"
-  when: ansible_distribution_release == 'squeeze'
+    - name: Install HAProxy (apt wheezy/jessie)
+      apt:
+        name: "{{ haproxy_package_name }}"
+        default_release: "{{ansible_distribution_release}}-backports"
+      when: ansible_distribution_release == 'wheezy' or ansible_distribution_release == 'jessie'
 
-- name: Install HAProxy (apt wheezy/jessie)
-  apt:
-    name: "{{ haproxy_package_name }}"
-    default_release: "{{ansible_distribution_release}}-backports"
-  when: ansible_distribution_release == 'wheezy' or ansible_distribution_release == 'jessie'
+    - name: Install HAProxy (Ubuntu)
+      package:
+        name: "{{ haproxy_package_name }}"
+      when: ansible_distribution == 'Ubuntu'
+  when: ansible_os_family == "Debian"
 
-- name: Install HAProxy (Ubuntu)
-  package:
-    name: "{{ haproxy_package_name }}"
-  when: ansible_distribution == 'Ubuntu'
+- block:
+    # RedHat/CentOS/OracleLinux/Rpm Packages
+    - name: Install HAProxy (yum)
+      yum:
+        name: "{{ haproxy_package_name }}"
+      when: ansible_pkg_mgr == "yum"
 
-- name: Installs policycoreutils-python
-  package:
-    name: policycoreutils-python
-    state: present
-  when: (ansible_selinux.status == "enabled") and (ansible_os_family == "RedHat")
+    - name: Installs policycoreutils-python
+      package:
+        name: policycoreutils-python
+        state: present
+      when: ansible_selinux.status == "enabled"
 
-- name: Allow HAProxy to manage ports (SELinux)
-  selinux_permissive:
-    name: haproxy_t
-    permissive: true
-  when: ansible_selinux.status == "enabled" and (ansible_os_family == "RedHat")
+    - name: Allow HAProxy to manage ports (SELinux)
+      selinux_permissive:
+        name: haproxy_t
+        permissive: true
+      when: ansible_selinux.status == "enabled"
+    
+  when: ansible_os_family == "RedHat"
 
 - meta: flush_handlers
 
