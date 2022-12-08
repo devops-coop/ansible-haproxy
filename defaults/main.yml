@@ -16,7 +16,7 @@ haproxy_global:
 
 haproxy_repo_codename: "{{ansible_distribution_release if ansible_distribution_release=='jammy' else 'focal'}}"
 haproxy_repo_version: "{{ haproxy_package_version }}"
-haproxy_package_version: 2.5
+haproxy_package_version: 2.6
 
 haproxy_frontends: []
 haproxy_backends: []
