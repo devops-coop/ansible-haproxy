@@ -77,3 +77,7 @@
 - name: 'Ensure chroot directory exists'
   file: name={{ haproxy_global.chroot }} state=directory
   when: haproxy_global.chroot is defined and haproxy_global.chroot
+
+- name: 'Remove default logrotate config'
+  file: name=/etc/logrotate.d/haproxy state=absent
+
